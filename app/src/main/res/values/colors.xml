@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary brand color. -->
-    <color name="colorPrimary">#23213F</color>
-    <color name="colorPrimaryVariant">#2E2C49</color>
-    <color name="colorOnPrimary">@android:color/white</color>
-    <!-- Secondary brand color. -->
-   <!-- <color name="colorSecondary">@color/teal_200</color>
-    <color name="colorSecondaryVariant">@color/teal_700</color>-->
-    <color name="colorOnSecondary">@android:color/black</color>
+    <color name="bright_turquoise">#1EF0D7</color>
+    <color name="ebony_clay">#23213F</color>
+    <color name="martinique">#2E2C49</color>
+    <color name="white">@android:color/white</color>
+    <color name="red">#FF575D</color>
+    <color name="transparent">@null</color>
 </resources>
