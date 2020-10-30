@@ -1,10 +1,11 @@
-package ru.yellowshark.surfandroidschool
+package ru.yellowshark.surfandroidschool.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import ru.yellowshark.surfandroidschool.ui.AuthActivity
+import ru.yellowshark.surfandroidschool.R
+import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
