@@ -1,6 +1,7 @@
 package ru.yellowshark.surfandroidschool.ui.auth
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.data.network.auth.AuthState
 import ru.yellowshark.surfandroidschool.data.network.auth.response.AuthResponse
+import ru.yellowshark.surfandroidschool.ui.main.MemesActivity
 import ru.yellowshark.surfandroidschool.utils.FORMATTED_PHONE_NUMBER_LENGTH
 import ru.yellowshark.surfandroidschool.utils.MIN_PASSWORD_LENGTH
 
@@ -36,7 +38,9 @@ class AuthActivity: AppCompatActivity() {
     }
 
     private fun openMemesActivity() {
-        TODO("Not yet implemented")
+        val intent = Intent(applicationContext, MemesActivity::class.java)
+        startActivity(intent)
+        this.finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

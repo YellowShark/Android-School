@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/memes_navigation"
+    app:startDestination="@id/destination_popular_memes">
+
+    <fragment
+        android:id="@+id/destination_popular_memes"
+        android:name="ru.yellowshark.surfandroidschool.ui.main.PopularMemesFragment"
+        android:label="Popular memes" />
+    <fragment
+        android:id="@+id/destination_create_meme"
+        android:name="ru.yellowshark.surfandroidschool.ui.main.CreateMemeFragment"
+        android:label="Create" />
+    <fragment
+        android:id="@+id/destination_profile"
+        android:name="ru.yellowshark.surfandroidschool.ui.main.ProfileFragment"
+        android:label="Profile" />
+</navigation>
