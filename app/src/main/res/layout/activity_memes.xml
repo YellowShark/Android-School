@@ -20,6 +20,7 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/memes_bottom_nav_menu" />
+        app:menu="@menu/memes_bottom_nav_menu"
+        app:labelVisibilityMode="unlabeled"/>
 
 </LinearLayout>
