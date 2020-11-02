@@ -27,11 +27,11 @@ class SessionManager (context: Context) {
         editor.apply()
     }
 
-    private fun fetchAuthToken(): String? {
+    fun fetchAuthToken(): String? {
         return prefs.getString(USER_TOKEN, null)
     }
 
-    fun saveUserInfo(userInfo: UserInfo) {
+    private fun saveUserInfo(userInfo: UserInfo) {
         val editor = prefs.edit()
         val json = gson.toJson(userInfo)
         editor.putString(USER_INFO, json)

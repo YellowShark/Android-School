@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/destination_popular_memes"
-        android:name="ru.yellowshark.surfandroidschool.ui.main.PopularMemesFragment"
+        android:name="ru.yellowshark.surfandroidschool.ui.main.popular.PopularMemesFragment"
         android:label="Popular memes" />
     <fragment
         android:id="@+id/destination_create_meme"

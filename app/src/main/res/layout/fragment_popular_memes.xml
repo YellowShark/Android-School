@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/ebony_clay">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/search_toolbar"
@@ -11,14 +12,13 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/martinique"
         app:menu="@menu/memes_toolbar_menu"
-        app:title="Popular memes"
+        app:title="@string/popular_memes"
         app:titleTextColor="@color/white" />
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/memeList_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Popular memes"
-        android:textSize="50dp" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"/>
 
 </LinearLayout>

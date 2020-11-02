@@ -37,4 +37,6 @@ class AuthViewModel(
         }
     }
 
+    fun getLastSessionToken(): String? = sessionManager.fetchAuthToken()
+
 }

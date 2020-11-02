@@ -14,12 +14,17 @@ class MemesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initUi()
+    }
+
+    private fun initUi() {
         setContentView(R.layout.activity_memes)
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         bottom_nav?.let {
             NavigationUI.setupWithNavController(it, navController)
         }
     }
+
     override fun onSupportNavigateUp() = navController.navigateUp()
 
 }

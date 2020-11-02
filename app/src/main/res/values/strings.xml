@@ -7,5 +7,7 @@
     <string name="error_empty_text">Поле не может быть пустым</string>
     <string name="error_text_is_not_phone_number">Введёный текст не является номером телефона</string>
     <string name="error_msg">Вы ввели неверные данные.\nПопробуйте ещё раз</string>
+    <string name="error_fail_load_msg">Не удалось загрузить ленту.\nОбновите экран или попробуйте позже.</string>
     <string name="success_msg">Успешно</string>
+    <string name="popular_memes">Популярные мемы</string>
 </resources>

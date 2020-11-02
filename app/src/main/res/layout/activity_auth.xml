@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootAuth_constrainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ebony_clay"
-    android:id="@+id/rootAuth_constrainLayout">
+    android:background="@color/ebony_clay">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_textInputLayout"
@@ -20,7 +20,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/login_et"
             style="@style/edit_text_style"
-            android:inputType="phone|number"/>
+            android:inputType="phone|number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -39,7 +39,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_et"
             style="@style/edit_text_style"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

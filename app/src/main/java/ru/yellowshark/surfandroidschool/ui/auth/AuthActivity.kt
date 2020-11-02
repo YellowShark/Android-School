@@ -45,6 +45,10 @@ class AuthActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val token = viewModel.getLastSessionToken()
+        if (token != null) {
+            openMemesActivity()
+        }
         setContentView(R.layout.activity_auth)
         observeViewModel()
         initUi()
