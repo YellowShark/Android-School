@@ -15,23 +15,39 @@
         app:title="@string/popular_memes"
         app:titleTextColor="@color/white" />
 
-    <include layout="@layout/progress_bar_layout"
-        android:id="@+id/progressBar"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/errorText_tv"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresher_srl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/error_fail_load_msg"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:visibility="gone"/>
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/memeList_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/memeList_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:visibility="gone"/>
+
+            <include layout="@layout/progress_bar_layout"
+                android:id="@+id/progressBar"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/errorText_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/error_fail_load_msg"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

@@ -1,18 +1,20 @@
 package ru.yellowshark.surfandroidschool.ui.main.popular
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_popular_memes.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.data.network.auth.State
 import ru.yellowshark.surfandroidschool.data.network.popular.response.Meme
 
-class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes) {
+class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes), SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: PopularMemesViewModel by viewModel()
     private val memesAdapter by lazy { MemesAdapter() }
@@ -27,6 +29,8 @@ class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes) {
             }
             is State.Error -> showError()
         }
+        if (refresher_srl.isRefreshing)
+            refresher_srl.isRefreshing = false
     }
 
     private fun showError() {
@@ -57,6 +61,12 @@ class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes) {
     }
 
     private fun initUi() {
+        refresher_srl.apply {
+            setOnRefreshListener(this@PopularMemesFragment)
+            setColorSchemeResources(R.color.ebony_clay)
+            setProgressBackgroundColorSchemeResource(R.color.bright_turquoise)
+        }
+
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         gridLayoutManager.gapStrategy
         memesAdapter.onItemClick = {
@@ -70,5 +80,11 @@ class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes) {
             layoutManager = gridLayoutManager
             adapter = memesAdapter
         }
+    }
+
+    override fun onRefresh() {
+        Handler().postDelayed({
+            updateList()
+        }, 500)
     }
 }
