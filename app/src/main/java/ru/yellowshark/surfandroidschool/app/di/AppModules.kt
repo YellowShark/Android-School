@@ -7,9 +7,11 @@ import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
 import ru.yellowshark.surfandroidschool.data.repository.Repository
 import ru.yellowshark.surfandroidschool.ui.auth.AuthViewModel
+import ru.yellowshark.surfandroidschool.ui.main.popular.PopularMemesViewModel
 
-val viewModelModule = module {
+val viewModelsModule = module {
     viewModel { AuthViewModel(get(), get()) }
+    viewModel { PopularMemesViewModel(get()) }
 }
 
 val repositoryModule = module {

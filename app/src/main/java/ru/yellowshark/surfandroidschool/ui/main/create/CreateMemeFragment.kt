@@ -1,4 +1,4 @@
-package ru.yellowshark.surfandroidschool.ui.main
+package ru.yellowshark.surfandroidschool.ui.main.create
 
 import androidx.fragment.app.Fragment
 import ru.yellowshark.surfandroidschool.R

@@ -12,6 +12,10 @@ import ru.yellowshark.surfandroidschool.databinding.ItemMemeBinding
 class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
 
     var data: List<Meme> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     var onItemClick: ((Meme) -> Unit)? = null
     var onLikeClick: ((Meme) -> Unit)? = null
 
@@ -32,11 +36,6 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
     }
 
     override fun getItemCount() = data.size
-
-    fun setItems(list: List<Meme>) {
-        data = list
-        notifyDataSetChanged()
-    }
 
     class MemeViewHolder(private val binding: ItemMemeBinding) : RecyclerView.ViewHolder(binding.root) {
 

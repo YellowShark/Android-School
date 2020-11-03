@@ -4,52 +4,61 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_popular_memes.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.network.MemesApi
+import ru.yellowshark.surfandroidschool.data.network.auth.State
 import ru.yellowshark.surfandroidschool.data.network.popular.response.Meme
 
 class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes) {
 
+    private val viewModel: PopularMemesViewModel by viewModel()
     private val memesAdapter by lazy { MemesAdapter() }
+    private val memesListObserver = Observer<State<List<Meme>>> { state ->
+        when(state) {
+            is State.Loading -> showLoading()
+            is State.Success -> {
+                memesAdapter.data = state.data
+                progressBar.visibility = View.GONE
+                memeList_rv.visibility = View.VISIBLE
+                errorText_tv.visibility = View.GONE
+            }
+            is State.Error -> showError()
+        }
+    }
+
+    private fun showError() {
+        progressBar.visibility = View.GONE
+        memeList_rv.visibility = View.GONE
+        errorText_tv.visibility = View.VISIBLE
+    }
+
+    private fun showLoading() {
+        progressBar.visibility = View.VISIBLE
+        memeList_rv.visibility = View.GONE
+        errorText_tv.visibility = View.GONE
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUi()
+        observeViewModel()
+        updateList()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun updateList() {
+        viewModel.requestPopularMemes()
+    }
 
-        MemesApi.getInstance().getPopularMemes().enqueue(object : Callback<List<Meme>> {
-            override fun onResponse(call: Call<List<Meme>>, response: Response<List<Meme>>) {
-                if (response.isSuccessful)
-                    response.body()?.let { memesAdapter.setItems(it) }
-                else
-                    Toast.makeText(activity, R.string.error_fail_load_msg, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onFailure(call: Call<List<Meme>>, t: Throwable) {}
-
-        })
-
-        /*GlobalScope.launch(Dispatchers.IO) {
-            val response = MemesApi.getInstance().getPopularMemes()
-            if (response.isSuccessful) {
-                response.body()?.let { memesAdapter.setItems(it) }
-            } else {
-                Toast.makeText(activity, response.message(), Toast.LENGTH_SHORT).show()
-            }
-        }*/
+    private fun observeViewModel() {
+        viewModel.memesListState.observe(viewLifecycleOwner, memesListObserver)
     }
 
     private fun initUi() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
+        gridLayoutManager.gapStrategy
         memesAdapter.onItemClick = {
             Toast.makeText(activity, "${it.title} was clicked", Toast.LENGTH_SHORT).show()
         }

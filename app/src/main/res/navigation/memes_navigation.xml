@@ -9,10 +9,10 @@
         android:label="Popular memes" />
     <fragment
         android:id="@+id/destination_create_meme"
-        android:name="ru.yellowshark.surfandroidschool.ui.main.CreateMemeFragment"
+        android:name="ru.yellowshark.surfandroidschool.ui.main.create.CreateMemeFragment"
         android:label="Create" />
     <fragment
         android:id="@+id/destination_profile"
-        android:name="ru.yellowshark.surfandroidschool.ui.main.ProfileFragment"
+        android:name="ru.yellowshark.surfandroidschool.ui.main.profile.ProfileFragment"
         android:label="Profile" />
 </navigation>

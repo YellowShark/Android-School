@@ -16,7 +16,7 @@ import ru.tinkoff.decoro.slots.PredefinedSlots
 import ru.tinkoff.decoro.watchers.FormatWatcher
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.network.auth.AuthState
+import ru.yellowshark.surfandroidschool.data.network.auth.State
 import ru.yellowshark.surfandroidschool.data.network.auth.response.AuthResponse
 import ru.yellowshark.surfandroidschool.ui.main.MemesActivity
 import ru.yellowshark.surfandroidschool.utils.FORMATTED_PHONE_NUMBER_LENGTH
@@ -26,14 +26,14 @@ import ru.yellowshark.surfandroidschool.utils.MIN_PASSWORD_LENGTH
 class AuthActivity: AppCompatActivity() {
 
     private val viewModel: AuthViewModel by viewModel()
-    private val stateObserver = Observer<AuthState<AuthResponse>> { state ->
+    private val stateObserver = Observer<State<AuthResponse>> { state ->
         when(state) {
-            is AuthState.Loading -> showProgressButton()
-            is AuthState.Success -> {
+            is State.Loading -> showProgressButton()
+            is State.Success -> {
                 hideProgressButton()
                 openMemesActivity()
             }
-            is AuthState.Error -> showError()
+            is State.Error -> showError()
         }
     }
 

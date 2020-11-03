@@ -15,6 +15,19 @@
         app:title="@string/popular_memes"
         app:titleTextColor="@color/white" />
 
+    <include layout="@layout/progress_bar_layout"
+        android:id="@+id/progressBar"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/errorText_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/error_fail_load_msg"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/memeList_rv"
         android:layout_width="match_parent"
