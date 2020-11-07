@@ -8,12 +8,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.yellowshark.surfandroidschool.data.network.SessionManager
 import ru.yellowshark.surfandroidschool.data.network.auth.State
+import ru.yellowshark.surfandroidschool.data.network.auth.response.UserInfo
 import ru.yellowshark.surfandroidschool.data.network.popular.response.Meme
 import ru.yellowshark.surfandroidschool.data.repository.Repository
 
 class PopularMemesViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private val _memesListState = MutableLiveData<State<List<Meme>>>()
@@ -32,4 +35,6 @@ class PopularMemesViewModel(
                 _memesListState.postValue(State.Error)
         }
     }
+
+    fun getLastSessionUserInfo(): UserInfo? = sessionManager.fetchUserInfo()
 }

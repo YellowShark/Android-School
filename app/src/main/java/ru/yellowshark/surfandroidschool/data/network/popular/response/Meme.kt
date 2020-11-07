@@ -3,7 +3,7 @@ package ru.yellowshark.surfandroidschool.data.network.popular.response
 
 import com.google.gson.annotations.SerializedName
 
-data class Meme(
+data class Meme (
     @SerializedName("createdDate")
     val createdDate: Int,
     @SerializedName("description")

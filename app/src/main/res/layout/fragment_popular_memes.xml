@@ -8,12 +8,9 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/search_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/martinique"
         app:menu="@menu/memes_toolbar_menu"
         app:title="@string/popular_memes"
-        app:titleTextColor="@color/white" />
+        style="@style/base_toolbar_style" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresher_srl"

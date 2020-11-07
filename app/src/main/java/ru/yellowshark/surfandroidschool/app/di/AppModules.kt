@@ -11,7 +11,7 @@ import ru.yellowshark.surfandroidschool.ui.main.popular.PopularMemesViewModel
 
 val viewModelsModule = module {
     viewModel { AuthViewModel(get(), get()) }
-    viewModel { PopularMemesViewModel(get()) }
+    viewModel { PopularMemesViewModel(get(), get()) }
 }
 
 val repositoryModule = module {
