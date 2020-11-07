@@ -1,4 +1,4 @@
-package ru.yellowshark.surfandroidschool.ui.main.popular
+package ru.yellowshark.surfandroidschool.ui.main.popular.main
 
 import android.os.Bundle
 import android.os.Handler
@@ -14,8 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
+import ru.yellowshark.surfandroidschool.data.db.entity.Meme
 import ru.yellowshark.surfandroidschool.data.network.auth.State
-import ru.yellowshark.surfandroidschool.data.network.popular.response.Meme
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
 
 class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -107,7 +107,10 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         memesAdapter.onItemClick = { meme ->
             val user = viewModel.getLastSessionUserInfo()
             val action =
-                PopularMemesFragmentDirections.actionOpenDetails(gson.toJson(meme), gson.toJson(user))
+                PopularMemesFragmentDirections.actionOpenDetails(
+                    gson.toJson(meme),
+                    gson.toJson(user)
+                )
             view?.let { Navigation.findNavController(it).navigate(action) }
         }
         memesAdapter.onLikeClick = {

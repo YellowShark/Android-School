@@ -1,4 +1,4 @@
-package ru.yellowshark.surfandroidschool.ui.main.popular
+package ru.yellowshark.surfandroidschool.ui.main.popular.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_meme.view.*
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.network.popular.response.Meme
+import ru.yellowshark.surfandroidschool.data.db.entity.Meme
 import ru.yellowshark.surfandroidschool.databinding.ItemMemeBinding
 
 class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
@@ -19,7 +19,8 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
     var onItemClick: ((Meme) -> Unit)? = null
     var onLikeClick: ((Meme) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MemeViewHolder.create(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        MemeViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: MemeViewHolder, position: Int) {
         val item = data[position]

@@ -9,11 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.gson.Gson
 import ru.yellowshark.surfandroidschool.R
+import ru.yellowshark.surfandroidschool.data.db.entity.Meme
 import ru.yellowshark.surfandroidschool.data.network.auth.response.UserInfo
-import ru.yellowshark.surfandroidschool.data.network.popular.response.Meme
 import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
 import ru.yellowshark.surfandroidschool.utils.BASE_USER_PHOTO
-import ru.yellowshark.surfandroidschool.utils.dateFromMillis
 
 class DetailMemeFragment : Fragment() {
 
@@ -57,19 +56,17 @@ class DetailMemeFragment : Fragment() {
                 val jsonUser = args.jsonUser
                 if (jsonMeme.isNotEmpty()) {
                     val meme = gson.fromJson(jsonMeme, Meme::class.java)
-                    //set data on view
                     photoUrl = meme.photoUrl
                     isLiked = meme.isFavorite
                     memeTitle = meme.title
                     description = meme.description
-                    date = dateFromMillis(meme.createdDate.toLong())
+                    date = meme.createdDate
 
                 }
                 if (jsonUser.isNotEmpty()) {
                     val userInfo = gson.fromJson(jsonUser, UserInfo::class.java)
                     userName = userInfo.username
                     userPhoto = BASE_USER_PHOTO
-
                 }
             }
         }
