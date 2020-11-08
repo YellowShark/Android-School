@@ -13,4 +13,10 @@ interface MemesDao {
 
     @Query("SELECT * FROM table_memes")
     suspend fun getCachedMemes(): List<Meme>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addCreatedMeme(meme: Meme)
+
+    @Query("DELETE FROM table_memes")
+    suspend fun clearAll()
 }

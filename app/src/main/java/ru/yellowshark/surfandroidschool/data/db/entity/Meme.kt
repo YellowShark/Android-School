@@ -17,7 +17,6 @@ data class Meme (
     val description: String,
 
     @SerializedName("id")
-    @PrimaryKey(autoGenerate = true)
     val id: String,
 
     @SerializedName("isFavorite")
@@ -31,4 +30,7 @@ data class Meme (
     @SerializedName("title")
     @ColumnInfo(name = "title")
     val title: String
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var columnId: Int = 0
+}

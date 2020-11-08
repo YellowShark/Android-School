@@ -17,6 +17,16 @@
         <item name="android:layout_marginEnd">16dp</item>
         <item name="boxCornerRadiusTopStart">8dp</item>
         <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="android:focusable">false</item>
+    </style>
+
+    <style name="text_input_layout_field_style" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:focusable">false</item>
+        <item name="boxBackgroundMode">none</item>
+        <item name="counterEnabled">true</item>
+        <item name="counterOverflowTextColor">@color/red</item>
     </style>
 
     <style name="edit_text_style">
@@ -31,4 +41,17 @@
         <item name="android:background">@color/martinique</item>
         <item name="titleTextColor">@color/white</item>
     </style>
+
+    <style name="base_root_layout_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/ebony_clay</item>
+    </style>
+
+    <style name="fab_shape_style">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30%</item>
+    </style>
+
 </resources>

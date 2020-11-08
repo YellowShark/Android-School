@@ -20,5 +20,14 @@
 
         <item name="colorAccent">@color/ebony_clay</item>
 
+        <item name="android:actionMenuTextColor">@color/bright_turquoise</item>
+
     </style>
+
+    <style name="Widget.MaterialComponents.ExtendedFloatingActionButton.Surf">
+        <item name="colorSecondary">@color/martinique</item>
+        <item name="colorOnSecondary">@color/bright_turquoise</item>
+
+    </style>
+
 </resources>
