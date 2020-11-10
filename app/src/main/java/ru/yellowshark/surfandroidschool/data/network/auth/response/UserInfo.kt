@@ -2,6 +2,7 @@ package ru.yellowshark.surfandroidschool.data.network.auth.response
 
 
 import com.google.gson.annotations.SerializedName
+import ru.yellowshark.surfandroidschool.domain.User
 
 data class UserInfo(
     @SerializedName("firstName")
@@ -14,4 +15,6 @@ data class UserInfo(
     val userDescription: String,
     @SerializedName("username")
     val username: String
-)
+) {
+    fun toUser() = User(username, firstName, lastName, userDescription)
+}

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.gson.Gson
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.db.entity.Meme
+import ru.yellowshark.surfandroidschool.data.db.entity.MemeEntity
 import ru.yellowshark.surfandroidschool.data.network.auth.response.UserInfo
 import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
 import ru.yellowshark.surfandroidschool.utils.BASE_USER_PHOTO
@@ -55,7 +55,7 @@ class DetailMemeFragment : Fragment() {
                 val jsonMeme = args.jsonMeme
                 val jsonUser = args.jsonUser
                 if (jsonMeme.isNotEmpty()) {
-                    val meme = gson.fromJson(jsonMeme, Meme::class.java)
+                    val meme = gson.fromJson(jsonMeme, MemeEntity::class.java)
                     photoUrl = meme.photoUrl
                     isLiked = meme.isFavorite
                     memeTitle = meme.title

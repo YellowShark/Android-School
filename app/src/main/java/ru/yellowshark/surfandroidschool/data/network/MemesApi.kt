@@ -8,9 +8,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import ru.yellowshark.surfandroidschool.data.db.entity.Meme
 import ru.yellowshark.surfandroidschool.data.network.auth.request.AuthRequest
 import ru.yellowshark.surfandroidschool.data.network.auth.response.AuthResponse
+import ru.yellowshark.surfandroidschool.data.network.popular.response.MemeListResponse
 import ru.yellowshark.surfandroidschool.utils.BASE_URL
 
 interface MemesApi {
@@ -19,7 +19,7 @@ interface MemesApi {
     suspend fun userAuth(@Body request: AuthRequest): Response<AuthResponse>
 
     @GET("memes")
-    suspend fun getPopularMemes(): Response<List<Meme>>
+    suspend fun getPopularMemes(): Response<MemeListResponse>
 
     companion object {
         var INSTANCE: MemesApi? = null

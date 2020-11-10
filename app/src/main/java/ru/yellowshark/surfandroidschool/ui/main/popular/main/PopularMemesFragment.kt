@@ -14,25 +14,21 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.db.entity.Meme
-import ru.yellowshark.surfandroidschool.data.network.auth.State
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
+import ru.yellowshark.surfandroidschool.domain.ViewState
 
 class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: PopularMemesViewModel by viewModel()
     private var _binding: FragmentPopularMemesBinding? = null
     private val binding get() = _binding!!
-    private val gson = Gson()
+    private val gson by lazy { Gson() }
     private val memesAdapter by lazy { MemesAdapter() }
-    private val memesListObserver = Observer<State<List<Meme>>> { state ->
+    private val memesListObserver = Observer<ViewState> { state ->
         when(state) {
-            is State.Loading -> showLoading()
-            is State.Success -> {
-                memesAdapter.data = state.data
-                showContent()
-            }
-            is State.Error -> showError()
+            is ViewState.Loading -> showLoading()
+            is ViewState.Success -> showContent()
+            is ViewState.Error -> showError()
         }
         hideRefresher()
     }
@@ -90,11 +86,16 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun updateList() {
-        viewModel.requestPopularMemes()
+        with(viewModel) {
+            requestPopularMemes()
+            memes.observe(viewLifecycleOwner, {
+                memesAdapter.data = it
+            })
+        }
     }
 
     private fun observeViewModel() {
-        viewModel.memesListState.observe(viewLifecycleOwner, memesListObserver)
+        viewModel.memesListViewState.observe(viewLifecycleOwner, memesListObserver)
     }
 
     private fun initUi() {

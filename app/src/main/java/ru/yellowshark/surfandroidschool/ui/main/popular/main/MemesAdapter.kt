@@ -6,8 +6,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_meme.view.*
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.db.entity.Meme
 import ru.yellowshark.surfandroidschool.databinding.ItemMemeBinding
+import ru.yellowshark.surfandroidschool.domain.Meme
 
 class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
 

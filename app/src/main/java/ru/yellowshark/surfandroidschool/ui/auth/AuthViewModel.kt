@@ -7,36 +7,30 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.yellowshark.surfandroidschool.data.network.SessionManager
-import ru.yellowshark.surfandroidschool.data.network.auth.State
-import ru.yellowshark.surfandroidschool.data.network.auth.request.AuthRequest
-import ru.yellowshark.surfandroidschool.data.network.auth.response.AuthResponse
 import ru.yellowshark.surfandroidschool.data.repository.Repository
+import ru.yellowshark.surfandroidschool.domain.Result
+import ru.yellowshark.surfandroidschool.domain.ViewState
 
 class AuthViewModel(
-    private val repository: Repository,
-    private val sessionManager: SessionManager
+    private val repository: Repository
 ) : ViewModel() {
 
-    private val _authState = MutableLiveData<State<AuthResponse>>()
-    val authState: LiveData<State<AuthResponse>>
+    private val _authState = MutableLiveData<ViewState>()
+    val authViewState: LiveData<ViewState>
         get() = _authState
-
 
     fun login(login: String, password: String) {
         this.viewModelScope.launch(Dispatchers.IO) {
-            _authState.postValue(State.Loading)
+            _authState.postValue(ViewState.Loading)
             delay(500)
-            val result = repository.login(AuthRequest(login, password))
-            if (result != null) {
-                _authState.postValue(State.Success(result))
-                sessionManager.saveUser(result)
-            }
+            val result = repository.login(login, password)
+            if (result is Result.Success)
+                _authState.postValue(ViewState.Success)
             else
-                _authState.postValue(State.Error)
+                _authState.postValue(ViewState.Error)
         }
     }
 
-    fun getLastSessionToken(): String? = sessionManager.fetchAuthToken()
+    fun getLastSessionToken(): String? = repository.getLastSessionToken()
 
 }

@@ -1,22 +1,27 @@
 package ru.yellowshark.surfandroidschool.ui.main.create
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
+import ru.yellowshark.surfandroidschool.data.db.entity.MemeEntity
 import ru.yellowshark.surfandroidschool.databinding.FragmentCreateMemeBinding
 import ru.yellowshark.surfandroidschool.utils.BASE_MEME_PIC
 
 class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
 
+    private val viewModel: CreateMemeViewModel by viewModel()
+
     private var _binding: FragmentCreateMemeBinding? = null
     private val binding get() = _binding!!
+
     private var _itemCreate: MenuItem? = null
     private val itemCreate get() = _itemCreate!!
 
@@ -25,7 +30,8 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_meme, container, false)
+        _binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_create_meme, container, false)
         return binding.root
     }
 
@@ -48,11 +54,23 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
     }
 
     private fun initListeners() {
-        itemCreate.setOnMenuItemClickListener {
-            Log.d("TAG", "onOptionsItemSelected: ")
-            return@setOnMenuItemClickListener true
-        }
         with(binding) {
+
+            itemCreate.setOnMenuItemClickListener {
+                viewModel.addMeme(
+                    MemeEntity(
+                        createdDate = System.currentTimeMillis().toInt(),
+                        description = memeTextEt.text.toString(),
+                        isFavorite = false,
+                        photoUrl = imageSrc.toString(),
+                        title = memeHeaderEt.text.toString()
+                    )
+                )
+                Toast.makeText(activity, "Ваш мем успешно создан!", Toast.LENGTH_SHORT).show()
+                this@CreateMemeFragment.fragmentManager?.popBackStack()
+                return@setOnMenuItemClickListener true
+            }
+
             memeHeaderEt.addTextChangedListener { text ->
                 _itemCreate?.isEnabled = text.toString().isNotEmpty()
             }

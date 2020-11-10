@@ -9,8 +9,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_textInputLayout"
         style="@style/text_input_layout_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:hint="@string/login"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -26,8 +24,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_textInputLayout"
         style="@style/text_input_layout_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="@string/password"
         app:helperText=""

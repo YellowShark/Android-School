@@ -4,18 +4,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import ru.yellowshark.surfandroidschool.data.db.entity.Meme
+import ru.yellowshark.surfandroidschool.data.db.entity.MemeEntity
+import ru.yellowshark.surfandroidschool.domain.Meme
 
 @Dao
 interface MemesDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun cacheMemes(memes: List<Meme>)
-
-    @Query("SELECT * FROM table_memes")
-    suspend fun getCachedMemes(): List<Meme>
+    @Query("SELECT title, description, photoUrl, createdDate, isFavorite FROM table_memes")
+    suspend fun getLocalMemes(): List<Meme>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addCreatedMeme(meme: Meme)
+    suspend fun addCreatedMeme(memeEntity: MemeEntity)
 
     @Query("DELETE FROM table_memes")
     suspend fun clearAll()
