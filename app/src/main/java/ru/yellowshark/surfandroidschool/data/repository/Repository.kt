@@ -1,7 +1,7 @@
 package ru.yellowshark.surfandroidschool.data.repository
 
 import ru.yellowshark.surfandroidschool.data.db.MemesDao
-import ru.yellowshark.surfandroidschool.data.db.entity.MemeEntity
+import ru.yellowshark.surfandroidschool.data.db.entity.EntityMeme
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
 import ru.yellowshark.surfandroidschool.data.network.auth.request.AuthRequest
@@ -14,7 +14,7 @@ class Repository(
     private val memesDao: MemesDao,
     private val sessionManager: SessionManager
 ) {
-    suspend fun login (login: String, password: String): Result {
+    suspend fun login (login: String, password: String): Result<Nothing> {
         val response = memesApi.userAuth(
             AuthRequest(login, password)
         )
@@ -22,10 +22,10 @@ class Repository(
             response.body()?.let {
                 sessionManager.saveUser(
                     token = it.accessToken,
-                    user = it.userInfo.toUser()
+                    user = it.userInfo.fromResponseUserInfoToDomainUser()
                 )
             }
-            Result.Success
+            Result.Success()
         } else {
             Result.Error
         }
@@ -35,17 +35,16 @@ class Repository(
 
     fun getLastSessionToken(): String? = sessionManager.fetchAuthToken()
 
-    suspend fun fetchPopularMemes(): List<Meme>? {
+    suspend fun fetchPopularMemes(): Result<List<Meme>> {
         val response = memesApi.getPopularMemes()
-
         return if (response.isSuccessful) {
-            response.body()?.toMemeList()
+            Result.Success(response.body()?.fromResponseMemeListToDomainMemeList())
         } else
-            null
+            Result.Error
     }
 
-    suspend fun saveMeme(memeEntity: MemeEntity) {
-        memesDao.addCreatedMeme(memeEntity)
+    suspend fun saveMeme(entityMeme: EntityMeme) {
+        memesDao.addCreatedMeme(entityMeme)
     }
 
     suspend fun getLocalMemes(): List<Meme>? = memesDao.getLocalMemes()

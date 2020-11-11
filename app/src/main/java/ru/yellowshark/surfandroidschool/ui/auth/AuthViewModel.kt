@@ -24,7 +24,7 @@ class AuthViewModel(
             _authState.postValue(ViewState.Loading)
             delay(500)
             val result = repository.login(login, password)
-            if (result is Result.Success)
+            if (result is Result.Success<*>)
                 _authState.postValue(ViewState.Success)
             else
                 _authState.postValue(ViewState.Error)

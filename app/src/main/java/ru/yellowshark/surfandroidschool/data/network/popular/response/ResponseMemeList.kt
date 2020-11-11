@@ -2,12 +2,12 @@ package ru.yellowshark.surfandroidschool.data.network.popular.response
 
 import ru.yellowshark.surfandroidschool.domain.Meme
 
-class MemeListResponse : ArrayList<MemeResponse>() {
+class ResponseMemeList : ArrayList<ResponseMeme>() {
 
-    fun toMemeList(): List<Meme> {
+    fun fromResponseMemeListToDomainMemeList(): List<Meme> {
         val list = ArrayList<Meme>()
         this.forEach {
-            list.add(it.toMeme())
+            list.add(it.fromResponseMemeToDomainMeme())
         }
         return list
     }

@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ru.yellowshark.surfandroidschool.data.db.entity.MemeEntity
+import ru.yellowshark.surfandroidschool.data.db.entity.EntityMeme
 
-@Database(entities = [MemeEntity::class], version = 3)
+@Database(entities = [EntityMeme::class], version = 3)
 abstract class MemesDatabase : RoomDatabase() {
     abstract fun memesDao(): MemesDao
 

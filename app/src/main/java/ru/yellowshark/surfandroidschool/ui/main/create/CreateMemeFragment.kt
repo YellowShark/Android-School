@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.db.entity.MemeEntity
+import ru.yellowshark.surfandroidschool.data.db.entity.EntityMeme
 import ru.yellowshark.surfandroidschool.databinding.FragmentCreateMemeBinding
 import ru.yellowshark.surfandroidschool.utils.BASE_MEME_PIC
 
@@ -58,7 +58,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
 
             itemCreate.setOnMenuItemClickListener {
                 viewModel.addMeme(
-                    MemeEntity(
+                    EntityMeme(
                         createdDate = System.currentTimeMillis().toInt(),
                         description = memeTextEt.text.toString(),
                         isFavorite = false,

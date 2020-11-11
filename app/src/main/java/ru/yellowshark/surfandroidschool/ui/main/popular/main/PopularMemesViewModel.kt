@@ -10,6 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.yellowshark.surfandroidschool.data.repository.Repository
 import ru.yellowshark.surfandroidschool.domain.Meme
+import ru.yellowshark.surfandroidschool.domain.Result
 import ru.yellowshark.surfandroidschool.domain.User
 import ru.yellowshark.surfandroidschool.domain.ViewState
 
@@ -29,9 +30,9 @@ class PopularMemesViewModel(
             delay(500)
             val result = repository.fetchPopularMemes()
             Log.d("TAG", "requestPopularMemes: ${result.toString()}")
-            if (result != null) {
+            if (result is Result.Success) {
                 _memesListViewState.postValue(ViewState.Success)
-                memes.postValue(result)
+                memes.postValue(result.data)
             }
             else
                 _memesListViewState.postValue(ViewState.Error)

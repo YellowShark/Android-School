@@ -16,5 +16,5 @@ data class UserInfo(
     @SerializedName("username")
     val username: String
 ) {
-    fun toUser() = User(username, firstName, lastName, userDescription)
+    fun fromResponseUserInfoToDomainUser() = User(username, firstName, lastName, userDescription)
 }

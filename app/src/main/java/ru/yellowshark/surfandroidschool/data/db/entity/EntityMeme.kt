@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "table_memes")
-data class MemeEntity (
+data class EntityMeme (
     @field:PrimaryKey(autoGenerate = true)
     val id: Int? = null,
 

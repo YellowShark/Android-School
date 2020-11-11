@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import ru.yellowshark.surfandroidschool.data.db.entity.MemeEntity
+import ru.yellowshark.surfandroidschool.data.db.entity.EntityMeme
 import ru.yellowshark.surfandroidschool.domain.Meme
 
 @Dao
@@ -13,7 +13,7 @@ interface MemesDao {
     suspend fun getLocalMemes(): List<Meme>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addCreatedMeme(memeEntity: MemeEntity)
+    suspend fun addCreatedMeme(entityMeme: EntityMeme)
 
     @Query("DELETE FROM table_memes")
     suspend fun clearAll()

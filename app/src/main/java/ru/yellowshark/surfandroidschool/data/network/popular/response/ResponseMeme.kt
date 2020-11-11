@@ -3,7 +3,7 @@ package ru.yellowshark.surfandroidschool.data.network.popular.response
 import com.google.gson.annotations.SerializedName
 import ru.yellowshark.surfandroidschool.domain.Meme
 
-data class MemeResponse (
+data class ResponseMeme (
     @SerializedName("createdDate")
     val createdDate: Int,
 
@@ -22,5 +22,5 @@ data class MemeResponse (
     @SerializedName("title")
     val title: String
 ) {
-    fun toMeme() = Meme(title, description, photoUrl, createdDate, isFavorite)
+    fun fromResponseMemeToDomainMeme() = Meme(title, description, photoUrl, createdDate, isFavorite)
 }
