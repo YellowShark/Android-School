@@ -8,16 +8,17 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentProfileBinding
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
-import ru.yellowshark.surfandroidschool.utils.BASE_USER_PHOTO
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val memesAdapter by lazy { MemesAdapter() }
+    private val viewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,15 +31,17 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
+        initUi()
         bindData()
+    }
+
+    private fun initUi() {
+        initRecyclerView()
     }
 
     private fun bindData() {
         with(binding) {
-            userPhoto = BASE_USER_PHOTO
-            userName = "Daniil"
-            userDescription = getString(R.string.short_dummy_text)
+            user = viewModel.userInfo
         }
     }
 

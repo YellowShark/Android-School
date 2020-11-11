@@ -59,11 +59,11 @@ class AuthActivity: AppCompatActivity() {
 
     private fun initUi() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
-
-        val formatWatcher: FormatWatcher = MaskFormatWatcher(
-            MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)
-        )
         with(binding) {
+            setContentView(root)
+            val formatWatcher: FormatWatcher = MaskFormatWatcher(
+                MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)
+            )
             formatWatcher.installOn(loginEt)
             loginEt.addTextChangedListener {
                 loginTextInputLayout.isErrorEnabled = false

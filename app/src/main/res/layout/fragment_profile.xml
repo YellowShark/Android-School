@@ -5,23 +5,18 @@
 
     <data>
 
-        <variable
-            name="userPhoto"
-            type="String" />
+        <import type="ru.yellowshark.surfandroidschool.domain.User" />
 
         <variable
-            name="userName"
-            type="String" />
-
-        <variable
-            name="userDescription"
-            type="String" />
+            name="user"
+            type="User" />
 
     </data>
 
     <LinearLayout style="@style/base_root_layout_style">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             style="@style/base_toolbar_style"
             android:background="@color/ebony_clay"
             android:theme="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary.WhiteText"
@@ -33,7 +28,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_margin="8dp"
-            loadAvatar="@{userPhoto}"
+            loadAvatar="@{user.photoUrl}"
             android:padding="8dp"
             android:background="@drawable/circle_border"/>
 
@@ -42,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:text="@{userName}"
+            android:text="@{user.username}"
             android:textColor="@color/white"
             android:textSize="24sp"
             tools:text="Username" />
@@ -53,7 +48,7 @@
             android:layout_margin="8dp"
             android:alpha="0.6"
             android:gravity="center"
-            android:text="@{userDescription}"
+            android:text="@{user.userDescription}"
             android:textColor="@color/white"
             android:textSize="16sp"
             tools:text="@string/short_dummy_text" />
