@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import com.google.gson.Gson
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityMeme
-import ru.yellowshark.surfandroidschool.data.network.auth.response.UserInfo
 import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
+import ru.yellowshark.surfandroidschool.domain.User
 import ru.yellowshark.surfandroidschool.utils.BASE_USER_PHOTO
 
 class DetailMemeFragment : Fragment() {
@@ -39,8 +38,7 @@ class DetailMemeFragment : Fragment() {
     private fun initView() {
         with(binding) {
             detailToolbar.setNavigationOnClickListener {
-                val action = DetailMemeFragmentDirections.actionCloseMemeDetail()
-                view?.let { Navigation.findNavController(it).navigate(action) }
+                fragmentManager?.popBackStack()
             }
             likeIv.setOnClickListener {
                 isLiked = !isLiked!!
@@ -61,11 +59,10 @@ class DetailMemeFragment : Fragment() {
                     memeTitle = meme.title
                     description = meme.description
                     date = meme.createdDate
-
                 }
                 if (jsonUser.isNotEmpty()) {
-                    val userInfo = gson.fromJson(jsonUser, UserInfo::class.java)
-                    userName = userInfo.username
+                    val userInfo = gson.fromJson(jsonUser, User::class.java)
+                    userName = userInfo.firstName
                     userPhoto = BASE_USER_PHOTO
                 }
             }

@@ -1,6 +1,5 @@
 package ru.yellowshark.surfandroidschool.ui.main.popular.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,20 +18,22 @@ class PopularMemesViewModel(
 ) : ViewModel() {
 
     private val _memesListViewState = MutableLiveData<ViewState>()
-    val memesListViewState: LiveData<ViewState>
-        get() = _memesListViewState
+    val memesListViewState: LiveData<ViewState> get() = _memesListViewState
 
-    val memes = MutableLiveData<List<Meme>>()
+    val memesLiveData = MutableLiveData<List<Meme>>()
+
+    init {
+        requestPopularMemes()
+    }
 
     fun requestPopularMemes() {
         this.viewModelScope.launch(Dispatchers.IO) {
             _memesListViewState.postValue(ViewState.Loading)
             delay(500)
             val result = repository.fetchPopularMemes()
-            Log.d("TAG", "requestPopularMemes: ${result.toString()}")
             if (result is Result.Success) {
                 _memesListViewState.postValue(ViewState.Success)
-                memes.postValue(result.data)
+                memesLiveData.postValue(result.data)
             }
             else
                 _memesListViewState.postValue(ViewState.Error)

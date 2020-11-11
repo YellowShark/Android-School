@@ -47,5 +47,5 @@ class Repository(
         memesDao.addCreatedMeme(entityMeme)
     }
 
-    suspend fun getLocalMemes(): List<Meme>? = memesDao.getLocalMemes()
+    suspend fun getLocalMemes(): List<Meme>? = memesDao.getLocalMemes() ?: emptyList()
 }

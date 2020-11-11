@@ -7,7 +7,7 @@ import java.util.*
 object BindingConverters {
     @BindingConversion
     @JvmStatic fun unixDateConverter(dateMillis: Int): String {
-        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         val resultDate = Date(dateMillis.toLong())
         return simpleDateFormat.format(resultDate)
     }

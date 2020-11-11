@@ -19,73 +19,81 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/martinique"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/memePic_iv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:loadImage="@{pictureUrl}"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{title}"
-            android:textColor="@color/white"
-            tools:text="Sample text" />
+        app:cardCornerRadius="10dp"
+        android:padding="8dp"
+        android:layout_margin="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@color/martinique"
+            android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/like_iv"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/memePic_iv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                tools:layout_gravity="center">
+                app:loadImage="@{pictureUrl}"
+                tools:srcCompat="@tools:sample/avatars" />
 
-                <ImageView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{title}"
+                android:textColor="@color/white"
+                tools:text="Sample text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/like_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:adjustViewBounds="true"
-                    android:src="@{isLiked ? @drawable/ic_like :  @drawable/ic_unlike}"
-                    tools:srcCompat="@drawable/ic_like" />
-            </FrameLayout>
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    tools:layout_gravity="center">
 
-            <FrameLayout
-                android:id="@+id/share_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackground"
-                tools:layout_gravity="center">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:adjustViewBounds="true"
+                        android:src="@{isLiked ? @drawable/ic_like :  @drawable/ic_unlike}"
+                        tools:srcCompat="@drawable/ic_like" />
+                </FrameLayout>
 
-                <ImageView
+                <FrameLayout
+                    android:id="@+id/share_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_share" />
-            </FrameLayout>
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?selectableItemBackground"
+                    tools:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_share" />
+                </FrameLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
 </layout>

@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:text="@{user.username}"
+            android:text="@{user.firstName}"
             android:textColor="@color/white"
             android:textSize="24sp"
             tools:text="Username" />
@@ -60,11 +60,16 @@
             android:alpha="0.1"
             android:background="@color/white" />
 
+        <include layout="@layout/progress_bar_layout"
+            android:id="@+id/progressBar"
+            android:visibility="gone"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp"
+            android:visibility="visible"/>
 
     </LinearLayout>
 </layout>

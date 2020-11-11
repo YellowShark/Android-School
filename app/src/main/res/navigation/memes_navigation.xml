@@ -18,7 +18,11 @@
     <fragment
         android:id="@+id/destination_profile"
         android:name="ru.yellowshark.surfandroidschool.ui.main.profile.ProfileFragment"
-        android:label="Profile" />
+        android:label="Profile" >
+        <action
+            android:id="@+id/actionOpenDetails"
+            app:destination="@id/destination_meme_detail" />
+    </fragment>
     <fragment
         android:id="@+id/destination_meme_detail"
         android:name="ru.yellowshark.surfandroidschool.ui.main.popular.detail.DetailMemeFragment"
@@ -26,9 +30,6 @@
         <argument
             android:name="jsonMeme"
             app:argType="string" />
-        <action
-            android:id="@+id/action_close_meme_detail"
-            app:destination="@id/destination_popular_memes" />
         <argument
             android:name="jsonUser"
             app:argType="string" />

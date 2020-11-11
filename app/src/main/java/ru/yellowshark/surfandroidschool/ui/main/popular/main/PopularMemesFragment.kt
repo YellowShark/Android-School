@@ -77,7 +77,6 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         observeViewModel()
-        updateList()
     }
 
     override fun onDestroy() {
@@ -88,14 +87,16 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun updateList() {
         with(viewModel) {
             requestPopularMemes()
-            memes.observe(viewLifecycleOwner, {
-                memesAdapter.data = it
-            })
         }
     }
 
     private fun observeViewModel() {
-        viewModel.memesListViewState.observe(viewLifecycleOwner, memesListObserver)
+        with(viewModel) {
+            memesListViewState.observe(viewLifecycleOwner, memesListObserver)
+            memesLiveData.observe(viewLifecycleOwner, {
+                memesAdapter.data = it
+            })
+        }
     }
 
     private fun initUi() {
