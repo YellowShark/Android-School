@@ -1,13 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/base_root_layout_style">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Profile"
-        android:textSize="50dp"
-        android:textColor="@color/white"/>
+    <data>
 
-</LinearLayout>
+        <variable
+            name="userPhoto"
+            type="String" />
+
+        <variable
+            name="userName"
+            type="String" />
+
+        <variable
+            name="userDescription"
+            type="String" />
+
+    </data>
+
+    <LinearLayout style="@style/base_root_layout_style">
+
+        <androidx.appcompat.widget.Toolbar
+            style="@style/base_toolbar_style"
+            android:background="@color/ebony_clay"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary.WhiteText"
+            app:menu="@menu/profile_toolbar_menu"
+            app:title="@string/profile"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            loadAvatar="@{userPhoto}"
+            android:padding="8dp"
+            android:background="@drawable/circle_border"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:text="@{userName}"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            tools:text="Username" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:alpha="0.6"
+            android:gravity="center"
+            android:text="@{userDescription}"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:text="@string/short_dummy_text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="8dp"
+            android:alpha="0.1"
+            android:background="@color/white" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+
+    </LinearLayout>
+</layout>

@@ -49,7 +49,6 @@ class AuthActivity: AppCompatActivity() {
         if (token != null) {
             openMemesActivity()
         }
-        binding = ActivityAuthBinding.inflate(layoutInflater)
         observeViewModel()
         initUi()
     }
@@ -59,6 +58,8 @@ class AuthActivity: AppCompatActivity() {
     }
 
     private fun initUi() {
+        binding = ActivityAuthBinding.inflate(layoutInflater)
+
         val formatWatcher: FormatWatcher = MaskFormatWatcher(
             MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER)
         )

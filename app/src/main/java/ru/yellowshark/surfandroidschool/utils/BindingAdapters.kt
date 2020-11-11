@@ -31,6 +31,13 @@ fun loadToolbarLogo(toolbar: androidx.appcompat.widget.Toolbar, url: String) {
         })
 }
 
+@BindingAdapter("loadAvatar")
+fun loadAvatar(view: ImageView, url: String?) {
+    Glide.with(view.context)
+        .load(url)
+        .circleCrop()
+        .into(view)
+}
 
 @BindingAdapter("loadImage")
 fun loadImage(view: ImageView, url: String) {
