@@ -1,5 +1,6 @@
 package ru.yellowshark.surfandroidschool.ui.main.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,25 +11,42 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentProfileBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
 
 class ProfileFragment : Fragment() {
-
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val gson by lazy { Gson() }
     private val memesAdapter by lazy { MemesAdapter() }
     private val viewModel: ProfileViewModel by viewModel()
     private val viewStateObserver = Observer<ViewState> { state ->
-        when(state) {
+        when (state) {
             is ViewState.Loading -> showLoading()
             is ViewState.Success -> showContent()
+            is ViewState.Error -> showError()
+            is ViewState.Destroy -> openLoginView()
         }
+    }
+
+    private fun showError() {
+        with(binding) {
+            Snackbar.make(root, getString(R.string.error_msg), Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.red))
+                .show()
+        }
+    }
+
+    private fun openLoginView() {
+        val intent = Intent(context?.applicationContext, AuthActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
     }
 
     private fun showContent() {
@@ -56,9 +74,9 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
         initUi()
         bindData()
-        observeViewModel()
     }
 
     private fun observeViewModel() {
@@ -72,6 +90,14 @@ class ProfileFragment : Fragment() {
 
     private fun initUi() {
         initRecyclerView()
+        initListeners()
+    }
+
+    private fun initListeners() {
+        binding.toolbar.menu.findItem(R.id.action_log_out).setOnMenuItemClickListener {
+            viewModel.logout()
+            return@setOnMenuItemClickListener true
+        }
     }
 
     private fun bindData() {

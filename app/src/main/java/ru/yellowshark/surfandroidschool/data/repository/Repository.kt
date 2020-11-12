@@ -14,7 +14,7 @@ class Repository(
     private val memesDao: MemesDao,
     private val sessionManager: SessionManager
 ) {
-    suspend fun login (login: String, password: String): Result<Nothing> {
+    suspend fun login(login: String, password: String): Result<Nothing> {
         val response = memesApi.userAuth(
             AuthRequest(login, password)
         )
@@ -29,6 +29,16 @@ class Repository(
         } else {
             Result.Error
         }
+    }
+
+    suspend fun logout(): Result<Nothing> {
+        val response = memesApi.userLogout()
+        return if (response.isSuccessful) {
+            sessionManager.forgetUser()
+            Result.Success()
+        }
+        else
+            Result.Error
     }
 
     fun getLastSessionUserInfo(): User? = sessionManager.fetchUserInfo()

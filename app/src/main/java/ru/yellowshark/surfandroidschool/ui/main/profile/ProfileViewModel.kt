@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.yellowshark.surfandroidschool.data.repository.Repository
 import ru.yellowshark.surfandroidschool.domain.Meme
+import ru.yellowshark.surfandroidschool.domain.Result
 import ru.yellowshark.surfandroidschool.domain.ViewState
 
 class ProfileViewModel(
@@ -33,5 +34,14 @@ class ProfileViewModel(
     }
 
     val userInfo = repository.getLastSessionUserInfo()
+
+    fun logout() {
+        this.viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.logout()
+            _viewState.postValue(
+                if (result is Result.Success) ViewState.Destroy else ViewState.Error
+            )
+        }
+    }
 
 }

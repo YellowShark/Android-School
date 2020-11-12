@@ -101,7 +101,7 @@ class AuthActivity: AppCompatActivity() {
     @SuppressLint("ResourceAsColor")
     private fun showError() {
         hideProgressButton()
-        Snackbar.make(binding.root, getString(R.string.error_msg), Snackbar.LENGTH_LONG)
+        Snackbar.make(binding.root, getString(R.string.error_wrong_data_msg), Snackbar.LENGTH_LONG)
             .setBackgroundTint(resources.getColor(R.color.red))
             .show()
     }

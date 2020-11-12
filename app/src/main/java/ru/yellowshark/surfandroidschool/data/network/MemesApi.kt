@@ -21,6 +21,9 @@ interface MemesApi {
     @GET("memes")
     suspend fun getPopularMemes(): Response<ResponseMemeList>
 
+    @POST("auth/logout")
+    suspend fun userLogout(): Response<*>
+
     companion object {
         var INSTANCE: MemesApi? = null
         fun getInstance(): MemesApi {
