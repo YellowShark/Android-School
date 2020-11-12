@@ -9,14 +9,14 @@ import androidx.fragment.app.DialogFragment
 import ru.yellowshark.surfandroidschool.R
 
 class LogoutDialog(
-    private val logoutListener: ((String) -> Unit)
+    private val logoutListener: (() -> Unit)
 ) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(ContextThemeWrapper(context!!, R.style.CustomAlertDialog))
             .setTitle(getString(R.string.really_want_to_quit))
             .setPositiveButton(R.string.log_out) { _: DialogInterface, _: Int ->
-                logoutListener.invoke("Выход из аккаунта...")
+                logoutListener.invoke()
             }
             .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
                 //actually do nothing

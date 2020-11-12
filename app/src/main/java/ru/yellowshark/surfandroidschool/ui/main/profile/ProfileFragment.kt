@@ -103,9 +103,8 @@ class ProfileFragment : Fragment() {
 
     private fun showDialog() {
         fragmentManager?.let { it ->
-            LogoutDialog { msg ->
+            LogoutDialog {
                 viewModel.logout()
-                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
             }.show(
                 it,
                 LogoutDialog::class.simpleName
