@@ -95,8 +95,21 @@ class ProfileFragment : Fragment() {
 
     private fun initListeners() {
         binding.toolbar.menu.findItem(R.id.action_log_out).setOnMenuItemClickListener {
-            viewModel.logout()
+            //viewModel.logout()
+            showDialog()
             return@setOnMenuItemClickListener true
+        }
+    }
+
+    private fun showDialog() {
+        fragmentManager?.let { it ->
+            LogoutDialog { msg ->
+                viewModel.logout()
+                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+            }.show(
+                it,
+                LogoutDialog::class.simpleName
+            )
         }
     }
 
