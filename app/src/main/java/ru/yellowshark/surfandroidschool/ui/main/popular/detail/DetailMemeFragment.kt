@@ -11,6 +11,7 @@ import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.User
+import ru.yellowshark.surfandroidschool.utils.shareMeme
 
 class DetailMemeFragment : Fragment() {
 
@@ -31,16 +32,20 @@ class DetailMemeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindData()
-        initView()
+        initListeners()
     }
 
-    private fun initView() {
+    private fun initListeners() {
         with(binding) {
             detailToolbar.setNavigationOnClickListener {
                 fragmentManager?.popBackStack()
             }
             likeIv.setOnClickListener {
-                meme.isFavorite = !meme.isFavorite
+                meme?.isFavorite = !meme?.isFavorite!!
+            }
+            detailToolbar.menu.findItem(R.id.action_share).setOnMenuItemClickListener {
+                meme?.let { meme -> context?.shareMeme(meme) }
+                return@setOnMenuItemClickListener true
             }
         }
     }

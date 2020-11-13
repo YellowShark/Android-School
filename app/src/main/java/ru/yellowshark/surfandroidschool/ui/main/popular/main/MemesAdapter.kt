@@ -18,6 +18,7 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
         }
     var onItemClick: ((Meme) -> Unit)? = null
     var onLikeClick: ((Meme) -> Unit)? = null
+    var onShareClick: ((Meme) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MemeViewHolder.create(parent)
@@ -25,14 +26,14 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
     override fun onBindViewHolder(holder: MemeViewHolder, position: Int) {
         val item = data[position]
         holder.bind(item)
-        with(holder) {
-            bind(item)
-            itemView.setOnClickListener { onItemClick?.let { click -> click(item) } }
-            itemView.like_iv.setOnClickListener {
+        with(holder.itemView) {
+            setOnClickListener { onItemClick?.let { function -> function(item) } }
+            like_iv.setOnClickListener {
                 item.isFavorite = !item.isFavorite
-                updateLike(isLiked = item.isFavorite)
-                onLikeClick?.let { click -> click(item) }
+                holder.updateLike(isLiked = item.isFavorite)
+                onLikeClick?.let { function -> function(item) }
             }
+            share_iv.setOnClickListener { onShareClick?.let { function -> function(item) } }
         }
     }
 

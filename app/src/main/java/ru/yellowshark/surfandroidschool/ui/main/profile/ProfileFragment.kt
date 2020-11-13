@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
@@ -19,6 +18,7 @@ import ru.yellowshark.surfandroidschool.databinding.FragmentProfileBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
+import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -37,9 +37,7 @@ class ProfileFragment : Fragment() {
 
     private fun showError() {
         with(binding) {
-            Snackbar.make(root, getString(R.string.error_msg), Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.red))
-                .show()
+            context?.applicationContext?.showErrorSnackbar(root, getString(R.string.error_msg))
         }
     }
 
@@ -95,7 +93,6 @@ class ProfileFragment : Fragment() {
 
     private fun initListeners() {
         binding.toolbar.menu.findItem(R.id.action_log_out).setOnMenuItemClickListener {
-            //viewModel.logout()
             showDialog()
             return@setOnMenuItemClickListener true
         }

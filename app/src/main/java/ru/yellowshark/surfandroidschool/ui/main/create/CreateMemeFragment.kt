@@ -55,7 +55,9 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
 
     private fun initListeners() {
         with(binding) {
-
+            toolbar.setNavigationOnClickListener {
+                fragmentManager?.popBackStack()
+            }
             itemCreate.setOnMenuItemClickListener {
                 viewModel.addMeme(
                     EntityMeme(
@@ -70,7 +72,6 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
                 this@CreateMemeFragment.fragmentManager?.popBackStack()
                 return@setOnMenuItemClickListener true
             }
-
             memeHeaderEt.addTextChangedListener { text ->
                 _itemCreate?.isEnabled = text.toString().isNotEmpty()
             }

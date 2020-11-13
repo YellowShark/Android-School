@@ -1,13 +1,11 @@
 package ru.yellowshark.surfandroidschool.ui.auth
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.tinkoff.decoro.MaskImpl
@@ -20,6 +18,7 @@ import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.ui.main.MemesActivity
 import ru.yellowshark.surfandroidschool.utils.FORMATTED_PHONE_NUMBER_LENGTH
 import ru.yellowshark.surfandroidschool.utils.MIN_PASSWORD_LENGTH
+import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 
 
 class AuthActivity: AppCompatActivity() {
@@ -98,12 +97,11 @@ class AuthActivity: AppCompatActivity() {
         }
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun showError() {
-        hideProgressButton()
-        Snackbar.make(binding.root, getString(R.string.error_wrong_data_msg), Snackbar.LENGTH_LONG)
-            .setBackgroundTint(resources.getColor(R.color.red))
-            .show()
+        with(binding) {
+            hideProgressButton()
+            applicationContext.showErrorSnackbar(root, getString(R.string.error_wrong_data_msg))
+        }
     }
 
     private fun showProgressButton() {

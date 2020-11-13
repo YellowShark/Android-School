@@ -16,6 +16,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.utils.shareMeme
 
 class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -106,17 +107,22 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        memesAdapter.onItemClick = { meme ->
-            val user = viewModel.getLastSessionUserInfo()
-            val action =
-                PopularMemesFragmentDirections.actionOpenDetails(
-                    gson.toJson(meme),
-                    gson.toJson(user)
-                )
-            view?.let { Navigation.findNavController(it).navigate(action) }
-        }
-        memesAdapter.onLikeClick = {
-            Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()
+        memesAdapter.apply {
+            onItemClick = { meme ->
+                val user = viewModel.getLastSessionUserInfo()
+                val action =
+                    PopularMemesFragmentDirections.actionOpenDetails(
+                        gson.toJson(meme),
+                        gson.toJson(user)
+                    )
+                view?.let { Navigation.findNavController(it).navigate(action) }
+            }
+            onLikeClick = {
+                Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()
+            }
+            onShareClick = { meme ->
+                context?.applicationContext?.shareMeme(meme)
+            }
         }
 
         binding.memeListRv.apply {

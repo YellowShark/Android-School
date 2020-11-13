@@ -22,4 +22,5 @@
     <string name="profile">Профиль</string>
     <string name="really_want_to_quit">Действительно хотите выйти?</string>
     <string name="cancel">Отмена</string>
+    <string name="send_to">Отправить мем...</string>
 </resources>
