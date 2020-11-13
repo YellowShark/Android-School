@@ -8,10 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.db.entity.EntityMeme
 import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
+import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.User
-import ru.yellowshark.surfandroidschool.utils.BASE_USER_PHOTO
 
 class DetailMemeFragment : Fragment() {
 
@@ -41,7 +40,7 @@ class DetailMemeFragment : Fragment() {
                 fragmentManager?.popBackStack()
             }
             likeIv.setOnClickListener {
-                isLiked = !isLiked!!
+                meme.isFavorite = !meme.isFavorite
             }
         }
     }
@@ -51,19 +50,14 @@ class DetailMemeFragment : Fragment() {
             with(binding) {
                 val args = DetailMemeFragmentArgs.fromBundle(it)
                 val jsonMeme = args.jsonMeme
-                val jsonUser = args.jsonUser
                 if (jsonMeme.isNotEmpty()) {
-                    val meme = gson.fromJson(jsonMeme, EntityMeme::class.java)
-                    photoUrl = meme.photoUrl
-                    isLiked = meme.isFavorite
-                    memeTitle = meme.title
-                    description = meme.description
-                    date = meme.createdDate
+                    val memeFromJson = gson.fromJson(jsonMeme, Meme::class.java)
+                    meme = memeFromJson
                 }
+                val jsonUser = args.jsonUser
                 if (jsonUser.isNotEmpty()) {
-                    val userInfo = gson.fromJson(jsonUser, User::class.java)
-                    userName = userInfo.firstName
-                    userPhoto = BASE_USER_PHOTO
+                    val userFromJson = gson.fromJson(jsonUser, User::class.java)
+                    user = userFromJson
                 }
             }
         }
