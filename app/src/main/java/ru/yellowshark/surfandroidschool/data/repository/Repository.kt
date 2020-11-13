@@ -1,7 +1,7 @@
 package ru.yellowshark.surfandroidschool.data.repository
 
 import ru.yellowshark.surfandroidschool.data.db.MemesDao
-import ru.yellowshark.surfandroidschool.data.db.entity.EntityMeme
+import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
 import ru.yellowshark.surfandroidschool.data.network.auth.request.AuthRequest
@@ -36,8 +36,7 @@ class Repository(
         return if (response.isSuccessful) {
             sessionManager.forgetUser()
             Result.Success()
-        }
-        else
+        } else
             Result.Error
     }
 
@@ -53,9 +52,14 @@ class Repository(
             Result.Error
     }
 
-    suspend fun saveMeme(entityMeme: EntityMeme) {
+    suspend fun saveMeme(entityMeme: EntityLocalMeme) {
         memesDao.addCreatedMeme(entityMeme)
     }
 
     suspend fun getLocalMemes(): List<Meme>? = memesDao.getLocalMemes() ?: emptyList()
+
+    suspend fun cacheMemes(memes: List<Meme>) =
+        memesDao.cacheMemes(memes.map { it.toDbEntityCachedMeme() })
+
+    suspend fun getCachedMemesByTitle(query: String) = memesDao.getCachedMemes("%$query%") ?: emptyList()
 }

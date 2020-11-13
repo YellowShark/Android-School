@@ -10,6 +10,9 @@
         <action
             android:id="@+id/actionOpenDetails"
             app:destination="@id/destination_meme_detail" />
+        <action
+            android:id="@+id/action_filter_search"
+            app:destination="@id/destination_search_filter" />
     </fragment>
     <fragment
         android:id="@+id/destination_create_meme"
@@ -33,5 +36,13 @@
         <argument
             android:name="jsonUser"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/destination_search_filter"
+        android:name="ru.yellowshark.surfandroidschool.ui.main.popular.search.MemesSearchFilterFragment"
+        android:label="MemesSearchFilterFragment" >
+        <action
+            android:id="@+id/actionOpenDetails"
+            app:destination="@id/destination_meme_detail" />
     </fragment>
 </navigation>

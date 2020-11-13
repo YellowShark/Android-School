@@ -34,6 +34,7 @@ class PopularMemesViewModel(
             if (result is Result.Success) {
                 _memesListViewState.postValue(ViewState.Success)
                 memesLiveData.postValue(result.data)
+                repository.cacheMemes(result.data!!)
             }
             else
                 _memesListViewState.postValue(ViewState.Error)

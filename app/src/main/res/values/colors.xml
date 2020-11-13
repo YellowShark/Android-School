@@ -5,6 +5,7 @@
     <color name="martinique">#2E2C49</color>
     <color name="ebony">#12102B</color>
     <color name="white">@android:color/white</color>
+    <color name="gray">@android:color/darker_gray</color>
     <color name="red">#FF575D</color>
     <color name="transparent">@null</color>
 </resources>

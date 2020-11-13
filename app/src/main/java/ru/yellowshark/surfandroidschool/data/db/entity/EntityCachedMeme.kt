@@ -1,12 +1,11 @@
 package ru.yellowshark.surfandroidschool.data.db.entity
 
-
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "table_memes")
-data class EntityMeme (
+@Entity(tableName = "table_cached_memes")
+data class EntityCachedMeme (
     @field:PrimaryKey(autoGenerate = true)
     val id: Int? = null,
 

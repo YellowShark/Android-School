@@ -11,11 +11,13 @@ import ru.yellowshark.surfandroidschool.data.repository.Repository
 import ru.yellowshark.surfandroidschool.ui.auth.AuthViewModel
 import ru.yellowshark.surfandroidschool.ui.main.create.CreateMemeViewModel
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesViewModel
+import ru.yellowshark.surfandroidschool.ui.main.popular.search.MemeSearchFilterViewModel
 import ru.yellowshark.surfandroidschool.ui.main.profile.ProfileViewModel
 
 val viewModelsModule = module {
     viewModel { AuthViewModel(get()) }
     viewModel { PopularMemesViewModel(get()) }
+    viewModel { MemeSearchFilterViewModel(get()) }
     viewModel { CreateMemeViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
 }

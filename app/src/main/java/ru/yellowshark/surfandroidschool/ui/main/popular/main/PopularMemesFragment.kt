@@ -25,7 +25,7 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private val binding get() = _binding!!
     private val gson by lazy { Gson() }
     private val memesAdapter by lazy { MemesAdapter() }
-    private val memesListObserver = Observer<ViewState> { state ->
+    private val viewStateObserver = Observer<ViewState> { state ->
         when(state) {
             is ViewState.Loading -> showLoading()
             is ViewState.Success -> showContent()
@@ -93,7 +93,7 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun observeViewModel() {
         with(viewModel) {
-            memesListViewState.observe(viewLifecycleOwner, memesListObserver)
+            memesListViewState.observe(viewLifecycleOwner, viewStateObserver)
             memesLiveData.observe(viewLifecycleOwner, {
                 memesAdapter.data = it
             })
@@ -101,8 +101,17 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initUi() {
+        initListeners()
         initRefresher()
         initRecyclerView()
+    }
+
+    private fun initListeners() {
+        binding.searchToolbar.menu.findItem(R.id.action_search).setOnMenuItemClickListener {
+            val action = PopularMemesFragmentDirections.actionFilterSearch()
+            view?.let { Navigation.findNavController(it).navigate(action) }
+            return@setOnMenuItemClickListener true
+        }
     }
 
     private fun initRecyclerView() {
