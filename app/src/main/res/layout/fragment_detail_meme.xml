@@ -17,6 +17,10 @@
             name="meme"
             type="Meme" />
 
+        <variable
+            name="isLiked"
+            type="Boolean" />
+
     </data>
 
     <ScrollView style="@style/base_root_layout_style">
@@ -82,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
-                        android:src="@{meme.isFavorite ? @drawable/ic_like :  @drawable/ic_unlike}"
+                        android:src="@{isLiked ? @drawable/ic_like :  @drawable/ic_unlike}"
                         tools:srcCompat="@drawable/ic_like" />
 
                 </FrameLayout>

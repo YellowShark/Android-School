@@ -100,7 +100,7 @@ class MemesSearchFilterFragment : Fragment() {
                 Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()
             }
             onShareClick = { meme ->
-                context?.applicationContext?.shareMeme(meme)
+                activity?.shareMeme(meme)
             }
         }
         recyclerView.apply {

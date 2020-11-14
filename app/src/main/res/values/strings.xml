@@ -28,4 +28,6 @@
     <string name="storage_perm_rationale">Без этого разрешения приложение Вы не сможете загружать изображения из галереи.</string>
     <string name="you_can_change_it_in_options">Вы всегда можете изменить параметры доступа в настройках приложения.</string>
     <string name="camera_perm_rationale">Без этого разрешения Вы не сможете использовать камеру в приложении.</string>
+    <string name="input_meme_title">Введите название мема</string>
+    <string name="load_photo">Пожалуйста, загрузите фото</string>
 </resources>

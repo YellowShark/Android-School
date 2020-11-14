@@ -54,6 +54,7 @@
         android:background="@color/transparent"
         android:translationZ="2dp"
         android:visibility="gone"
+        android:theme="@style/Widget.AppCompat.ProgressBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

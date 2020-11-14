@@ -130,7 +130,7 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()
             }
             onShareClick = { meme ->
-                context?.applicationContext?.shareMeme(meme)
+                activity?.shareMeme(meme)
             }
         }
 

@@ -106,8 +106,8 @@ class AuthActivity: AppCompatActivity() {
 
     private fun showProgressButton() {
         with(binding) {
-            progressOnBtnPb.visibility = View.VISIBLE
             signInBtn.text = ""
+            progressOnBtnPb.visibility = View.VISIBLE
         }
     }
 

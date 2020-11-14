@@ -41,10 +41,10 @@ class DetailMemeFragment : Fragment() {
                 fragmentManager?.popBackStack()
             }
             likeIv.setOnClickListener {
-                meme?.isFavorite = !meme?.isFavorite!!
+                isLiked = !isLiked!!
             }
             detailToolbar.menu.findItem(R.id.action_share).setOnMenuItemClickListener {
-                meme?.let { meme -> context?.shareMeme(meme) }
+                meme?.let { meme -> activity?.shareMeme(meme) }
                 return@setOnMenuItemClickListener true
             }
         }
@@ -58,6 +58,7 @@ class DetailMemeFragment : Fragment() {
                 if (jsonMeme.isNotEmpty()) {
                     val memeFromJson = gson.fromJson(jsonMeme, Meme::class.java)
                     meme = memeFromJson
+                    isLiked = memeFromJson.isFavorite
                 }
                 val jsonUser = args.jsonUser
                 if (jsonUser.isNotEmpty()) {
