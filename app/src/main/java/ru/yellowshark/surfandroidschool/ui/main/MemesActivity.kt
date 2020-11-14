@@ -29,6 +29,8 @@ class MemesActivity : AppCompatActivity() {
             binding.bottomNav.visibility = when (navDestination.id) {
                 R.id.destination_meme_detail ->
                     View.GONE
+                R.id.destination_create_meme ->
+                    View.GONE
                 else ->
                     View.VISIBLE
             }
@@ -40,5 +42,4 @@ class MemesActivity : AppCompatActivity() {
 
 
     override fun onSupportNavigateUp() = navController.navigateUp()
-
 }

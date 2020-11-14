@@ -40,10 +40,12 @@ fun loadAvatar(view: ImageView, url: String?) {
 }
 
 @BindingAdapter("loadImage")
-fun loadImage(view: ImageView, url: String) {
-    Glide.with(view.context)
-        .load(url)
-        .into(view)
+fun loadImage(view: ImageView, url: String?) {
+    url?.let {
+        Glide.with(view.context)
+            .load(it)
+            .into(view)
+    }
 }
 
 
