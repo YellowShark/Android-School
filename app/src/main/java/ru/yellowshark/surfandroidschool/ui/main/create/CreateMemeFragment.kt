@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -15,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -23,6 +26,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 import ru.yellowshark.surfandroidschool.databinding.FragmentCreateMemeBinding
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
 
@@ -30,6 +37,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
         val REQUEST_GALLERY_PHOTO: Int = 1003
     }
 
+    private val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE: Int = 1004
     private val PERMISSION_CAMERA_REQUEST_CODE: Int = 1002
     private val PERMISSION_STORAGE_REQUEST_CODE: Int = 1001
 
@@ -40,6 +48,8 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
 
     private var _itemCreate: MenuItem? = null
     private val itemCreate get() = _itemCreate!!
+
+    private lateinit var currentPhotoPath: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -111,6 +121,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
                 },
                 checkCameraCallback = {
                     if (isCameraPermissionGranted()) {
+                        dispatchTakePictureIntent()
                         return@AddPictureDialogFragment true
                     } else {
                         requestCameraPermission()
@@ -134,8 +145,11 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
                 REQUEST_GALLERY_PHOTO -> {
                     Log.d("TAG", "onActivityResult: ${data?.data}")
                     data?.data?.let { uri ->
-                        setImage(uri)
+                        setImageFromGallery(uri)
                     }
+                }
+                CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                    setImageFromCamera()
                 }
             }
         } else {
@@ -144,13 +158,68 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
         }
     }
 
-    private fun setImage(uri: Uri) {
+    private fun setImageFromCamera() {
+        activity?.let {
+            Glide.with(it)
+                .load(currentPhotoPath)
+                .into(binding.memePicIv)
+        }
+    }
+
+    private fun setImageFromGallery(uri: Uri) {
         activity?.let {
             Glide.with(it)
                 .load(uri)
                 .into(binding.memePicIv)
         }
     }
+
+
+    //--------------camera pic--------------------------------------------------------------------//
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        context?.applicationContext?.let {
+            val timestamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            val storageDir: File = it.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+            return File.createTempFile(
+                "JPEG_${timestamp}",
+                ".jpg",
+                storageDir
+            ).apply {
+                currentPhotoPath = absolutePath
+            }
+        }
+        return File("")
+    }
+
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            context?.applicationContext?.let { ctx ->
+                takePictureIntent.resolveActivity(ctx.packageManager).also {
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        ex.printStackTrace()
+                        null
+                    }
+                    photoFile?.also {
+                        val photoUri: Uri = FileProvider.getUriForFile(
+                            ctx,
+                            "ru.yellowshark.surfandroidschool.fileprovider",
+                            it
+                        )
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                        startActivityForResult(
+                            takePictureIntent,
+                            CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE
+                        )
+                    }
+                }
+            }
+        }
+    }
+
 
     //--------------permissions-------------------------------------------------------------------//
 
@@ -247,7 +316,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
             }
             PERMISSION_CAMERA_REQUEST_CODE -> {
                 if (isCameraPermissionGranted()) {
-                    showDialog()
+                    dispatchTakePictureIntent()
                 } else {
                     context?.applicationContext?.let {
                         AlertDialog.Builder(it)
