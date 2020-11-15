@@ -65,7 +65,7 @@ class DetailMemeFragment : Fragment() {
                 val memeFromJson = gson.fromJson(jsonMeme, Meme::class.java)
                 meme = memeFromJson
                 isLiked = memeFromJson.isFavorite
-                memeIv.transitionName = memeFromJson.photoUrl
+                root.transitionName = memeFromJson.photoUrl
             }
             val jsonUser = args.jsonUser
             if (jsonUser.isNotEmpty()) {

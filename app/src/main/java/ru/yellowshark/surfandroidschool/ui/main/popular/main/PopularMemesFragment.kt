@@ -118,8 +118,8 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         memesAdapter.apply {
-            onItemClick = { meme, imageView ->
-                val extras = FragmentNavigatorExtras(imageView to meme.photoUrl)
+            onItemClick = { meme, itemView ->
+                val extras = FragmentNavigatorExtras(itemView to meme.photoUrl)
                 val user = viewModel.getLastSessionUserInfo()
                 val action =
                     PopularMemesFragmentDirections.actionOpenDetails(

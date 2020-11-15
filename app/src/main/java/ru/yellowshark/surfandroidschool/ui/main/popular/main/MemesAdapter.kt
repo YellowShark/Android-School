@@ -1,8 +1,8 @@
 package ru.yellowshark.surfandroidschool.ui.main.popular.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_meme.view.*
@@ -17,7 +17,7 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
             field = value
             notifyDataSetChanged()
         }
-    var onItemClick: ((Meme, ImageView) -> Unit)? = null
+    var onItemClick: ((Meme, View) -> Unit)? = null
     var onLikeClick: ((Meme) -> Unit)? = null
     var onShareClick: ((Meme) -> Unit)? = null
 
@@ -32,7 +32,7 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
                 onItemClick?.let { function ->
                     function(
                         item,
-                        holder.itemView.findViewById(R.id.memePic_iv)
+                        holder.itemView
                     )
                 }
             }
@@ -61,7 +61,7 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
 
         fun bind(meme: Meme) {
             with(binding) {
-                binding.memePicIv.transitionName = meme.photoUrl
+                binding.root.transitionName = meme.photoUrl
                 pictureUrl = meme.photoUrl
                 title = meme.title
                 isLiked = meme.isFavorite

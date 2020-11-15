@@ -122,8 +122,8 @@ class ProfileFragment : Fragment() {
             val gridLayoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             memesAdapter.apply {
-                onItemClick = { meme, imageView ->
-                    val extras = FragmentNavigatorExtras(imageView to meme.photoUrl)
+                onItemClick = { meme, itemView ->
+                    val extras = FragmentNavigatorExtras(itemView to meme.photoUrl)
                     val user = viewModel.userInfo
                     val action =
                         ProfileFragmentDirections.actionOpenDetails(

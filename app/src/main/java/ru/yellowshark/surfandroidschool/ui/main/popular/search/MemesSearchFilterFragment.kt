@@ -88,9 +88,9 @@ class MemesSearchFilterFragment : Fragment() {
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         memesAdapter.apply {
-            onItemClick = { meme, imageView ->
+            onItemClick = { meme, itemView ->
                 val user = viewModel.getLastSessionUserInfo()
-                val extras = FragmentNavigatorExtras(imageView to meme.photoUrl)
+                val extras = FragmentNavigatorExtras(itemView to meme.photoUrl)
                 val action =
                     PopularMemesFragmentDirections.actionOpenDetails(
                         gson.toJson(meme),
