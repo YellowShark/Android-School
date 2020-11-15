@@ -58,6 +58,8 @@ class Repository(
 
     suspend fun getLocalMemes(): List<Meme>? = memesDao.getLocalMemes() ?: emptyList()
 
+    suspend fun updateLocalMeme(meme: Meme) = memesDao.updateMemeByDate(meme.isFavorite, meme.createdDate)
+
     suspend fun cacheMemes(memes: List<Meme>) =
         memesDao.cacheMemes(memes.map { it.toDbEntityCachedMeme() })
 

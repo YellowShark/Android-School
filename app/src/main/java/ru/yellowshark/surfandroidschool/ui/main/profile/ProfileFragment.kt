@@ -3,9 +3,9 @@ package ru.yellowshark.surfandroidschool.ui.main.profile
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,11 +22,12 @@ import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), MenuItem.OnMenuItemClickListener {
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val gson by lazy { Gson() }
-    private val memesAdapter by lazy { MemesAdapter() }
+    private val memesAdapter = MemesAdapter()
     private val viewModel: ProfileViewModel by viewModel()
     private val viewStateObserver = Observer<ViewState> { state ->
         when (state) {
@@ -94,10 +95,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initListeners() {
-        binding.toolbar.menu.findItem(R.id.action_log_out).setOnMenuItemClickListener {
-            showDialog()
-            return@setOnMenuItemClickListener true
-        }
+        binding.toolbar.menu.findItem(R.id.action_log_out).setOnMenuItemClickListener(this)
     }
 
     private fun showDialog() {
@@ -112,9 +110,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun bindData() {
-        with(binding) {
-            user = viewModel.userInfo
-        }
+        binding.user = viewModel.userInfo
     }
 
     private fun initRecyclerView() {
@@ -135,12 +131,8 @@ class ProfileFragment : Fragment() {
                             .navigate(R.id.destination_meme_detail, action.arguments, null, extras)
                     }
                 }
-                onLikeClick = {
-                    Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()
-                }
-                onShareClick = { meme ->
-                    activity?.shareMeme(meme)
-                }
+                onLikeClick = { viewModel.updateLike(it) }
+                onShareClick = { meme -> activity?.shareMeme(meme) }
             }
             recyclerView.apply {
                 layoutManager = gridLayoutManager
@@ -154,4 +146,9 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.action_log_out)
+            showDialog()
+        return true
+    }
 }

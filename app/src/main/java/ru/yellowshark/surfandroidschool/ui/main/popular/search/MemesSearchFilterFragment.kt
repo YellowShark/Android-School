@@ -23,9 +23,10 @@ import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesFragmen
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 
 class MemesSearchFilterFragment : Fragment() {
+
+    private val viewModel: MemeSearchFilterViewModel by viewModel()
     private var _binding: FragmentSearchFilterBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MemeSearchFilterViewModel by viewModel()
     private lateinit var searchView: SearchView
     private lateinit var searchItem: MenuItem
     private val memesAdapter = MemesAdapter()
@@ -89,8 +90,8 @@ class MemesSearchFilterFragment : Fragment() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         memesAdapter.apply {
             onItemClick = { meme, itemView ->
-                val user = viewModel.getLastSessionUserInfo()
                 val extras = FragmentNavigatorExtras(itemView to meme.photoUrl)
+                val user = viewModel.getLastSessionUserInfo()
                 val action =
                     PopularMemesFragmentDirections.actionOpenDetails(
                         gson.toJson(meme),

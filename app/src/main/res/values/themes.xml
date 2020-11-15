@@ -41,8 +41,7 @@
     <style name="CustomAlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:background">@color/martinique</item>
         <item name="android:textColor">@color/white</item>
-        <item name="colorPrimary">@color/martinique</item>
-        <item name="colorOnPrimary">@color/bright_turquoise</item>
+        <item name="colorPrimary">@color/bright_turquoise</item>
     </style>
 
 </resources>

@@ -3,6 +3,7 @@ package ru.yellowshark.surfandroidschool.ui.main.popular.main
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -19,13 +20,14 @@ import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 
-class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener,
+    MenuItem.OnMenuItemClickListener {
 
     private val viewModel: PopularMemesViewModel by viewModel()
     private var _binding: FragmentPopularMemesBinding? = null
     private val binding get() = _binding!!
     private val gson by lazy { Gson() }
-    private val memesAdapter by lazy { MemesAdapter() }
+    private val memesAdapter = MemesAdapter()
     private val viewStateObserver = Observer<ViewState> { state ->
         when (state) {
             is ViewState.Loading -> showLoading()
@@ -108,11 +110,7 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initListeners() {
-        binding.searchToolbar.menu.findItem(R.id.action_search).setOnMenuItemClickListener {
-            val action = PopularMemesFragmentDirections.actionFilterSearch()
-            view?.let { Navigation.findNavController(it).navigate(action) }
-            return@setOnMenuItemClickListener true
-        }
+        binding.searchToolbar.menu.findItem(R.id.action_search).setOnMenuItemClickListener(this)
     }
 
     private fun initRecyclerView() {
@@ -157,5 +155,13 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         Handler().postDelayed({
             updateList()
         }, 500)
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.action_search) {
+            val action = PopularMemesFragmentDirections.actionFilterSearch()
+            view?.let { Navigation.findNavController(it).navigate(action) }
+        }
+        return true
     }
 }

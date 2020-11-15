@@ -9,10 +9,18 @@
         android:label="Popular memes" >
         <action
             android:id="@+id/actionOpenDetails"
-            app:destination="@id/destination_meme_detail" />
+            app:destination="@id/destination_meme_detail"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_filter_search"
-            app:destination="@id/destination_search_filter" />
+            app:destination="@id/destination_search_filter"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/destination_create_meme"
@@ -24,7 +32,11 @@
         android:label="Profile" >
         <action
             android:id="@+id/actionOpenDetails"
-            app:destination="@id/destination_meme_detail" />
+            app:destination="@id/destination_meme_detail"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/destination_meme_detail"
@@ -43,6 +55,10 @@
         android:label="MemesSearchFilterFragment" >
         <action
             android:id="@+id/actionOpenDetails"
-            app:destination="@id/destination_meme_detail" />
+            app:destination="@id/destination_meme_detail"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

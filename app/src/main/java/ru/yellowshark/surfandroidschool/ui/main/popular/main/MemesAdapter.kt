@@ -12,14 +12,14 @@ import ru.yellowshark.surfandroidschool.domain.Meme
 
 class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
 
+    var onItemClick: ((Meme, View) -> Unit)? = null
+    var onLikeClick: ((Meme) -> Unit)? = null
+    var onShareClick: ((Meme) -> Unit)? = null
     var data: List<Meme> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
-    var onItemClick: ((Meme, View) -> Unit)? = null
-    var onLikeClick: ((Meme) -> Unit)? = null
-    var onShareClick: ((Meme) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MemeViewHolder.create(parent)

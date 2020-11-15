@@ -33,6 +33,12 @@ class ProfileViewModel(
         }
     }
 
+    fun updateLike(meme: Meme) {
+        this.viewModelScope.launch(Dispatchers.IO) {
+            repository.updateLocalMeme(meme)
+        }
+    }
+
     val userInfo = repository.getLastSessionUserInfo()
 
     fun logout() {

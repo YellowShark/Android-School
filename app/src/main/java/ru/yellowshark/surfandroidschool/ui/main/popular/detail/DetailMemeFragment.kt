@@ -2,6 +2,7 @@ package ru.yellowshark.surfandroidschool.ui.main.popular.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -15,7 +16,7 @@ import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.User
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 
-class DetailMemeFragment : Fragment() {
+class DetailMemeFragment : Fragment(), MenuItem.OnMenuItemClickListener {
 
     private var _binding: FragmentDetailMemeBinding? = null
     private val binding get() = _binding!!
@@ -51,10 +52,7 @@ class DetailMemeFragment : Fragment() {
             likeIv.setOnClickListener {
                 isLiked = !isLiked!!
             }
-            detailToolbar.menu.findItem(R.id.action_share).setOnMenuItemClickListener {
-                meme?.let { meme -> activity?.shareMeme(meme) }
-                return@setOnMenuItemClickListener true
-            }
+            detailToolbar.menu.findItem(R.id.action_share).setOnMenuItemClickListener(this@DetailMemeFragment)
         }
     }
 
@@ -73,5 +71,11 @@ class DetailMemeFragment : Fragment() {
                 user = userFromJson
             }
         }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.action_share)
+            binding.meme?.let { meme -> activity?.shareMeme(meme) }
+        return true
     }
 }

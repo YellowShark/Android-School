@@ -10,14 +10,14 @@ import ru.yellowshark.surfandroidschool.domain.Meme
 
 @Dao
 interface MemesDao {
-    @Query("SELECT title, description, photoUrl, createdDate, isFavorite FROM table_local_memes")
-    suspend fun getLocalMemes(): List<Meme>?
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCreatedMeme(entityMeme: EntityLocalMeme)
 
-    @Query("DELETE FROM table_local_memes")
-    suspend fun clearAll()
+    @Query("SELECT title, description, photoUrl, createdDate, isFavorite FROM table_local_memes")
+    suspend fun getLocalMemes(): List<Meme>?
+
+    @Query("UPDATE table_local_memes SET isFavorite = :isLiked WHERE createdDate = :createdDate")
+    suspend fun updateMemeByDate(isLiked: Boolean, createdDate: Int)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun cacheMemes(memes: List<EntityCachedMeme>)
