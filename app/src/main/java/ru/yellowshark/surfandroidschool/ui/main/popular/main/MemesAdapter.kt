@@ -2,6 +2,7 @@ package ru.yellowshark.surfandroidschool.ui.main.popular.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_meme.view.*
@@ -16,7 +17,7 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
             field = value
             notifyDataSetChanged()
         }
-    var onItemClick: ((Meme) -> Unit)? = null
+    var onItemClick: ((Meme, ImageView) -> Unit)? = null
     var onLikeClick: ((Meme) -> Unit)? = null
     var onShareClick: ((Meme) -> Unit)? = null
 
@@ -27,7 +28,14 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
         val item = data[position]
         holder.bind(item)
         with(holder.itemView) {
-            setOnClickListener { onItemClick?.let { function -> function(item) } }
+            setOnClickListener {
+                onItemClick?.let { function ->
+                    function(
+                        item,
+                        holder.itemView.findViewById(R.id.memePic_iv)
+                    )
+                }
+            }
             like_iv.setOnClickListener {
                 item.isFavorite = !item.isFavorite
                 holder.updateLike(isLiked = item.isFavorite)
@@ -39,7 +47,8 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
 
     override fun getItemCount() = data.size
 
-    class MemeViewHolder(private val binding: ItemMemeBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MemeViewHolder(private val binding: ItemMemeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         companion object {
             fun create(parent: ViewGroup): MemeViewHolder {
@@ -52,6 +61,7 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
 
         fun bind(meme: Meme) {
             with(binding) {
+                binding.memePicIv.transitionName = meme.photoUrl
                 pictureUrl = meme.photoUrl
                 title = meme.title
                 isLiked = meme.isFavorite

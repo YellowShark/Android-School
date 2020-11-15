@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_search_filter.*
@@ -30,7 +31,7 @@ class MemesSearchFilterFragment : Fragment() {
     private val memesAdapter = MemesAdapter()
     private val gson by lazy { Gson() }
     private val viewStateObserver = Observer<ViewState> { state ->
-        when(state) {
+        when (state) {
             is ViewState.Success -> showResults()
             is ViewState.Error -> showError()
         }
@@ -87,14 +88,18 @@ class MemesSearchFilterFragment : Fragment() {
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         memesAdapter.apply {
-            onItemClick = { meme ->
+            onItemClick = { meme, imageView ->
                 val user = viewModel.getLastSessionUserInfo()
+                val extras = FragmentNavigatorExtras(imageView to meme.photoUrl)
                 val action =
                     PopularMemesFragmentDirections.actionOpenDetails(
                         gson.toJson(meme),
                         gson.toJson(user)
                     )
-                view?.let { Navigation.findNavController(it).navigate(action) }
+                view?.let {
+                    Navigation.findNavController(it)
+                        .navigate(R.id.destination_meme_detail, action.arguments, null, extras)
+                }
             }
             onLikeClick = {
                 Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()

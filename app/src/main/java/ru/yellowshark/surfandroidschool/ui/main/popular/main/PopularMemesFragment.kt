@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
@@ -26,7 +27,7 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private val gson by lazy { Gson() }
     private val memesAdapter by lazy { MemesAdapter() }
     private val viewStateObserver = Observer<ViewState> { state ->
-        when(state) {
+        when (state) {
             is ViewState.Loading -> showLoading()
             is ViewState.Success -> showContent()
             is ViewState.Error -> showError()
@@ -117,14 +118,18 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         memesAdapter.apply {
-            onItemClick = { meme ->
+            onItemClick = { meme, imageView ->
+                val extras = FragmentNavigatorExtras(imageView to meme.photoUrl)
                 val user = viewModel.getLastSessionUserInfo()
                 val action =
                     PopularMemesFragmentDirections.actionOpenDetails(
                         gson.toJson(meme),
                         gson.toJson(user)
                     )
-                view?.let { Navigation.findNavController(it).navigate(action) }
+                view?.let {
+                    Navigation.findNavController(it)
+                        .navigate(R.id.destination_meme_detail, action.arguments, null, extras)
+                }
             }
             onLikeClick = {
                 Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()

@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.Gson
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -18,6 +19,7 @@ import ru.yellowshark.surfandroidschool.databinding.FragmentProfileBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
+import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 
 class ProfileFragment : Fragment() {
@@ -119,17 +121,26 @@ class ProfileFragment : Fragment() {
         with(binding) {
             val gridLayoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            memesAdapter.onItemClick = { meme ->
-                val user = viewModel.userInfo
-                val action =
-                    ProfileFragmentDirections.actionOpenDetails(
-                        gson.toJson(meme),
-                        gson.toJson(user)
-                    )
-                view?.let { Navigation.findNavController(it).navigate(action) }
-            }
-            memesAdapter.onLikeClick = {
-                Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()
+            memesAdapter.apply {
+                onItemClick = { meme, imageView ->
+                    val extras = FragmentNavigatorExtras(imageView to meme.photoUrl)
+                    val user = viewModel.userInfo
+                    val action =
+                        ProfileFragmentDirections.actionOpenDetails(
+                            gson.toJson(meme),
+                            gson.toJson(user)
+                        )
+                    view?.let {
+                        Navigation.findNavController(it)
+                            .navigate(R.id.destination_meme_detail, action.arguments, null, extras)
+                    }
+                }
+                onLikeClick = {
+                    Toast.makeText(activity, "${it.title} was liked", Toast.LENGTH_SHORT).show()
+                }
+                onShareClick = { meme ->
+                    activity?.shareMeme(meme)
+                }
             }
             recyclerView.apply {
                 layoutManager = gridLayoutManager

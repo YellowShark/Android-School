@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.gson.Gson
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
@@ -18,6 +20,12 @@ class DetailMemeFragment : Fragment() {
     private var _binding: FragmentDetailMemeBinding? = null
     private val binding get() = _binding!!
     private val gson = Gson()
+    private val args: DetailMemeFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,20 +59,18 @@ class DetailMemeFragment : Fragment() {
     }
 
     private fun bindData() {
-        arguments?.let {
-            with(binding) {
-                val args = DetailMemeFragmentArgs.fromBundle(it)
-                val jsonMeme = args.jsonMeme
-                if (jsonMeme.isNotEmpty()) {
-                    val memeFromJson = gson.fromJson(jsonMeme, Meme::class.java)
-                    meme = memeFromJson
-                    isLiked = memeFromJson.isFavorite
-                }
-                val jsonUser = args.jsonUser
-                if (jsonUser.isNotEmpty()) {
-                    val userFromJson = gson.fromJson(jsonUser, User::class.java)
-                    user = userFromJson
-                }
+        with(binding) {
+            val jsonMeme = args.jsonMeme
+            if (jsonMeme.isNotEmpty()) {
+                val memeFromJson = gson.fromJson(jsonMeme, Meme::class.java)
+                meme = memeFromJson
+                isLiked = memeFromJson.isFavorite
+                memeIv.transitionName = memeFromJson.photoUrl
+            }
+            val jsonUser = args.jsonUser
+            if (jsonUser.isNotEmpty()) {
+                val userFromJson = gson.fromJson(jsonUser, User::class.java)
+                user = userFromJson
             }
         }
     }
