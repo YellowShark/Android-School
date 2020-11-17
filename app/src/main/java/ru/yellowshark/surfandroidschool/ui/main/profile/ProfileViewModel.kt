@@ -23,6 +23,8 @@ class ProfileViewModel(
         loadLocalMemes()
     }
 
+    val userInfo = repository.getLastSessionUserInfo()
+
     private fun loadLocalMemes() {
         this.viewModelScope.launch(Dispatchers.IO) {
             _viewState.postValue(ViewState.Loading)
@@ -38,8 +40,6 @@ class ProfileViewModel(
             repository.updateLocalMeme(meme)
         }
     }
-
-    val userInfo = repository.getLastSessionUserInfo()
 
     fun logout() {
         this.viewModelScope.launch(Dispatchers.IO) {

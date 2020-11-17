@@ -2,10 +2,8 @@ package ru.yellowshark.surfandroidschool.ui.main.popular.main
 
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,13 +17,13 @@ import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.utils.shareMeme
+import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener,
+class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes), SwipeRefreshLayout.OnRefreshListener,
     MenuItem.OnMenuItemClickListener {
 
     private val viewModel: PopularMemesViewModel by viewModel()
-    private var _binding: FragmentPopularMemesBinding? = null
-    private val binding get() = _binding!!
+    private val binding: FragmentPopularMemesBinding by viewBinding(FragmentPopularMemesBinding::bind)
     private val gson by lazy { Gson() }
     private val memesAdapter = MemesAdapter()
     private val viewStateObserver = Observer<ViewState> { state ->
@@ -68,24 +66,10 @@ class PopularMemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener,
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentPopularMemesBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
         observeViewModel()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     private fun updateList() {

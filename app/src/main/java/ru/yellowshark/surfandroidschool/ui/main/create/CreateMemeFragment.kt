@@ -2,60 +2,33 @@ package ru.yellowshark.surfandroidschool.ui.main.create
 
 import android.Manifest.permission.*
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 import ru.yellowshark.surfandroidschool.databinding.FragmentCreateMemeBinding
+import ru.yellowshark.surfandroidschool.utils.getPhotoPath
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
+import ru.yellowshark.surfandroidschool.utils.viewBinding
 
 class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
 
-    companion object {
-        val REQUEST_GALLERY_PHOTO: Int = 1003
-        val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE: Int = 1004
-    }
-
-    private var currentPhotoPath: String? = null
     private val PERMISSION_CAMERA_REQUEST_CODE: Int = 1002
     private val PERMISSION_STORAGE_REQUEST_CODE: Int = 1001
 
     private val viewModel: CreateMemeViewModel by viewModel()
-
-    private var _binding: FragmentCreateMemeBinding? = null
-    private val binding get() = _binding!!
-
-    private var _itemCreate: MenuItem? = null
-    private val itemCreate get() = _itemCreate!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_create_meme, container, false)
-        return binding.root
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
+    private val binding: FragmentCreateMemeBinding by viewBinding(FragmentCreateMemeBinding::bind)
+    private lateinit var itemCreate: MenuItem
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,7 +37,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
     }
 
     private fun initView() {
-        _itemCreate = binding.toolbar.menu.findItem(R.id.action_create)
+        itemCreate = binding.toolbar.menu.findItem(R.id.action_create)
         binding.imageSrc = null
     }
 
@@ -99,11 +72,17 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
     private fun isAllFilled(text: String): Boolean {
         return when {
             text.isEmpty() -> {
-                context?.applicationContext?.showErrorSnackbar(binding.root, getString(R.string.input_meme_title))
+                context?.applicationContext?.showErrorSnackbar(
+                    binding.root,
+                    getString(R.string.input_meme_title)
+                )
                 false
             }
             binding.imageSrc == null -> {
-                context?.applicationContext?.showErrorSnackbar(binding.root, getString(R.string.load_photo))
+                context?.applicationContext?.showErrorSnackbar(
+                    binding.root,
+                    getString(R.string.load_photo)
+                )
                 false
             }
             else -> true
@@ -119,7 +98,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
                         return@AddPictureDialogFragment true
                     else
                         requestStoragePermissions()
-                        return@AddPictureDialogFragment false
+                    return@AddPictureDialogFragment false
                 },
                 checkCameraCallback = {
                     if (isCameraPermissionGranted()) {
@@ -150,10 +129,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
                     }
                 }
                 CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE -> {
-                    context?.getSharedPreferences(context?.getString(R.string.app_name), Context.MODE_PRIVATE)?.let { preferences ->
-                        currentPhotoPath = preferences.getString(AddPictureDialogFragment.PHOTO_PATH_KEY, "")
-                        binding.imageSrc = currentPhotoPath
-                    }
+                    binding.imageSrc = context?.applicationContext?.getPhotoPath()
                 }
             }
         } else {
@@ -268,5 +244,10 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
                 }
             }
         }
+    }
+
+    companion object {
+        const val REQUEST_GALLERY_PHOTO: Int = 1003
+        const val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE: Int = 1004
     }
 }

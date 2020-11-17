@@ -30,4 +30,7 @@
     <string name="camera_perm_rationale">Без этого разрешения Вы не сможете использовать камеру в приложении.</string>
     <string name="input_meme_title">Введите название мема</string>
     <string name="load_photo">Пожалуйста, загрузите фото</string>
+    <string name="select_photo">Выбрать фото</string>
+    <string name="from_gallery">Из галереи</string>
+    <string name="take_a_photo">Сделать фото</string>
 </resources>

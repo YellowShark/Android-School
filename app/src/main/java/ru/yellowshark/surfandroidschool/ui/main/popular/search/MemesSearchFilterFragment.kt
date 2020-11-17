@@ -1,10 +1,8 @@
 package ru.yellowshark.surfandroidschool.ui.main.popular.search
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -21,12 +19,12 @@ import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesFragmentDirections
 import ru.yellowshark.surfandroidschool.utils.shareMeme
+import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class MemesSearchFilterFragment : Fragment() {
+class MemesSearchFilterFragment : Fragment(R.layout.fragment_search_filter) {
 
     private val viewModel: MemeSearchFilterViewModel by viewModel()
-    private var _binding: FragmentSearchFilterBinding? = null
-    private val binding get() = _binding!!
+    private val binding: FragmentSearchFilterBinding by viewBinding(FragmentSearchFilterBinding::bind)
     private lateinit var searchView: SearchView
     private lateinit var searchItem: MenuItem
     private val memesAdapter = MemesAdapter()
@@ -50,15 +48,6 @@ class MemesSearchFilterFragment : Fragment() {
             recyclerView.visibility = View.VISIBLE
             placeholderTv.visibility = View.GONE
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSearchFilterBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -128,11 +117,6 @@ class MemesSearchFilterFragment : Fragment() {
                 searchItem.collapseActionView()
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     private val searchTextListener = object : SearchView.OnQueryTextListener {

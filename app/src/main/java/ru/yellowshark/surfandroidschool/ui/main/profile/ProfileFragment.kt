@@ -2,11 +2,8 @@ package ru.yellowshark.surfandroidschool.ui.main.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -21,11 +18,11 @@ import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
+import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class ProfileFragment : Fragment(), MenuItem.OnMenuItemClickListener {
+class ProfileFragment : Fragment(R.layout.fragment_profile), MenuItem.OnMenuItemClickListener {
 
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
+    private val binding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
     private val gson by lazy { Gson() }
     private val memesAdapter = MemesAdapter()
     private val viewModel: ProfileViewModel by viewModel()
@@ -62,15 +59,6 @@ class ProfileFragment : Fragment(), MenuItem.OnMenuItemClickListener {
             recyclerView.visibility = View.GONE
             progressBar.root.visibility = View.VISIBLE
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -139,11 +127,6 @@ class ProfileFragment : Fragment(), MenuItem.OnMenuItemClickListener {
                 adapter = memesAdapter
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

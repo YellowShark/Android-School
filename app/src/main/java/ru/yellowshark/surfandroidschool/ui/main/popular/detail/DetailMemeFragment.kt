@@ -1,11 +1,8 @@
 package ru.yellowshark.surfandroidschool.ui.main.popular.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
@@ -15,27 +12,17 @@ import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.User
 import ru.yellowshark.surfandroidschool.utils.shareMeme
+import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class DetailMemeFragment : Fragment(), MenuItem.OnMenuItemClickListener {
+class DetailMemeFragment : Fragment(R.layout.fragment_detail_meme), MenuItem.OnMenuItemClickListener {
 
-    private var _binding: FragmentDetailMemeBinding? = null
-    private val binding get() = _binding!!
+    private val binding: FragmentDetailMemeBinding by viewBinding(FragmentDetailMemeBinding::bind)
     private val gson = Gson()
     private val args: DetailMemeFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_detail_meme, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

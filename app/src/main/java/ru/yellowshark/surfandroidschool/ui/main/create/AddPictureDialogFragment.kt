@@ -2,7 +2,6 @@ package ru.yellowshark.surfandroidschool.ui.main.create
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -14,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.utils.APP_AUTHORITY
 import ru.yellowshark.surfandroidschool.utils.createImageFile
+import ru.yellowshark.surfandroidschool.utils.savePhotoPath
 import java.io.File
 import java.io.IOException
 
@@ -23,20 +23,16 @@ class AddPictureDialogFragment(
     private val checkCameraCallback: () -> Boolean,
 ) : DialogFragment() {
 
-    companion object {
-        val PHOTO_PATH_KEY = "PHOTO_PATH_KEY"
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(ContextThemeWrapper(context!!, R.style.CustomAlertDialog))
-            .setTitle("Выбрать фото")
+            .setTitle(getString(R.string.select_photo))
             .setCancelable(true)
-            .setPositiveButton("Из галереи") { _: DialogInterface, _: Int ->
+            .setPositiveButton(getString(R.string.from_gallery)) { _: DialogInterface, _: Int ->
                 if (checkStorageCallback.invoke()) {
                     selectPhotoFromGallery()
                 }
             }
-            .setNegativeButton("Сделать фото") { _: DialogInterface, _: Int ->
+            .setNegativeButton(getString(R.string.take_a_photo)) { _: DialogInterface, _: Int ->
                 if (checkCameraCallback.invoke()) {
                     dispatchTakePictureIntent()
                 }
@@ -64,7 +60,7 @@ class AddPictureDialogFragment(
                         null
                     }
                     photoFile?.also { file ->
-                        savePhotoPath(file.absolutePath)
+                        ctx.savePhotoPath(file.absolutePath)
                         val photoUri: Uri = FileProvider.getUriForFile(
                             ctx,
                             APP_AUTHORITY,
@@ -81,11 +77,7 @@ class AddPictureDialogFragment(
         }
     }
 
-    private fun savePhotoPath(currentPhotoPath: String) {
-        context?.getSharedPreferences(context?.getString(R.string.app_name), Context.MODE_PRIVATE)?.let { preferences ->
-            val editor = preferences.edit()
-            editor.putString(PHOTO_PATH_KEY, currentPhotoPath)
-            editor.apply()
-        }
+    companion object {
+        val PHOTO_PATH_KEY = "PHOTO_PATH_KEY"
     }
 }

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.domain.Meme
+import ru.yellowshark.surfandroidschool.ui.main.create.AddPictureDialogFragment
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -45,4 +46,18 @@ fun Context.createImageFile(): File {
         ".jpg",
         storageDir
     )
+}
+
+fun Context.savePhotoPath(currentPhotoPath: String) {
+    this.getSharedPreferences(this.getString(R.string.app_name), Context.MODE_PRIVATE)
+        ?.let { preferences ->
+            val editor = preferences.edit()
+            editor.putString(AddPictureDialogFragment.PHOTO_PATH_KEY, currentPhotoPath)
+            editor.apply()
+        }
+}
+
+fun Context.getPhotoPath(): String {
+    return this.getSharedPreferences(this.getString(R.string.app_name), Context.MODE_PRIVATE)
+        ?.getString(AddPictureDialogFragment.PHOTO_PATH_KEY, "") ?: ""
 }
