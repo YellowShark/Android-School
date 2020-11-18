@@ -3,13 +3,13 @@ package ru.yellowshark.surfandroidschool.data.repository
 import ru.yellowshark.surfandroidschool.data.db.MemesDao
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
+import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
+import ru.yellowshark.surfandroidschool.data.network.NothingFoundException
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
 import ru.yellowshark.surfandroidschool.data.network.auth.request.AuthRequest
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.Result
 import ru.yellowshark.surfandroidschool.domain.User
-import ru.yellowshark.surfandroidschool.internal.NoConnectivityException
-import ru.yellowshark.surfandroidschool.internal.NothingFoundException
 
 class Repository(
     private val memesApi: MemesApi,
@@ -77,7 +77,7 @@ class Repository(
 
     suspend fun cacheMemes(memes: List<Meme>) {
         val newMemes = ArrayList<Meme>(memes)
-        val alreadyCachedMemes = memesDao.getCachedMemesByTitle("") ?: return
+        val alreadyCachedMemes = memesDao.getCachedMemes() ?: return
         memes.forEach {
             if (alreadyCachedMemes.contains(it))
                 newMemes.remove(it)

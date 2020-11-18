@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import okhttp3.Interceptor
 import okhttp3.Response
-import ru.yellowshark.surfandroidschool.internal.NoConnectivityException
 
 class ConnectivityInterceptor(context: Context) : Interceptor {
 

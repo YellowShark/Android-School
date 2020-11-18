@@ -1,4 +1,4 @@
-package ru.yellowshark.surfandroidschool.internal
+package ru.yellowshark.surfandroidschool.data.network
 
 import java.io.IOException
 

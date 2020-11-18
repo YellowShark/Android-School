@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
+import ru.yellowshark.surfandroidschool.data.network.NothingFoundException
 import ru.yellowshark.surfandroidschool.data.repository.Repository
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.Result
 import ru.yellowshark.surfandroidschool.domain.User
 import ru.yellowshark.surfandroidschool.domain.ViewState
-import ru.yellowshark.surfandroidschool.internal.NoConnectivityException
-import ru.yellowshark.surfandroidschool.internal.NothingFoundException
 
 class PopularMemesViewModel(
     private val repository: Repository
