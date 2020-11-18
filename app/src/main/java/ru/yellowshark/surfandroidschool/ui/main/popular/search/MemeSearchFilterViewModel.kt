@@ -31,5 +31,4 @@ class MemeSearchFilterViewModel(
         }
     }
     fun getLastSessionUserInfo(): User? = repository.getLastSessionUserInfo()
-
 }

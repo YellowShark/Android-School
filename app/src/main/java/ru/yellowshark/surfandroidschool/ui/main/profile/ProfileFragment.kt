@@ -9,13 +9,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.gson.Gson
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentProfileBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
+import ru.yellowshark.surfandroidschool.utils.SingleGson
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 import ru.yellowshark.surfandroidschool.utils.viewBinding
@@ -23,7 +23,7 @@ import ru.yellowshark.surfandroidschool.utils.viewBinding
 class ProfileFragment : Fragment(R.layout.fragment_profile), MenuItem.OnMenuItemClickListener {
 
     private val binding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
-    private val gson by lazy { Gson() }
+    private val gson by lazy { SingleGson.getInstance() }
     private val memesAdapter = MemesAdapter()
     private val viewModel: ProfileViewModel by viewModel()
     private val viewStateObserver = Observer<ViewState> { state ->

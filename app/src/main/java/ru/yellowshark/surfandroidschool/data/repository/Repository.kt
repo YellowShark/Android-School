@@ -14,6 +14,7 @@ class Repository(
     private val memesDao: MemesDao,
     private val sessionManager: SessionManager
 ) {
+    // TODO check is Internet switch on
     suspend fun login(login: String, password: String): Result<Nothing> {
         val response = memesApi.userAuth(
             AuthRequest(login, password)
@@ -58,10 +59,20 @@ class Repository(
 
     suspend fun getLocalMemes(): List<Meme>? = memesDao.getLocalMemes() ?: emptyList()
 
-    suspend fun updateLocalMeme(meme: Meme) = memesDao.updateMemeByDate(meme.isFavorite, meme.createdDate)
+    suspend fun updateLocalMeme(meme: Meme) =
+        memesDao.updateMemeByDate(meme.isFavorite, meme.createdDate)
 
-    suspend fun cacheMemes(memes: List<Meme>) =
-        memesDao.cacheMemes(memes.map { it.toDbEntityCachedMeme() })
+    suspend fun cacheMemes(memes: List<Meme>) {
+        val newMemes = ArrayList<Meme>(memes)
+        val alreadyCachedMemes = memesDao.getCachedMemesByTitle("") ?: return
+        memes.forEach {
+            if (alreadyCachedMemes.contains(it))
+                newMemes.remove(it)
+        }
+        if (newMemes.isNotEmpty())
+            memesDao.cacheMemes(newMemes.map { it.toDbEntityCachedMeme() })
+    }
 
-    suspend fun getCachedMemesByTitle(query: String) = memesDao.getCachedMemes("%$query%") ?: emptyList()
+    suspend fun getCachedMemesByTitle(query: String) =
+        memesDao.getCachedMemesByTitle("%$query%") ?: emptyList()
 }

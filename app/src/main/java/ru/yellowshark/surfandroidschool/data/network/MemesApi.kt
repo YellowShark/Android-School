@@ -14,7 +14,7 @@ import ru.yellowshark.surfandroidschool.data.network.popular.response.ResponseMe
 import ru.yellowshark.surfandroidschool.utils.BASE_URL
 
 interface MemesApi {
-
+    // TODO AuthApi
     @POST("auth/login")
     suspend fun userAuth(@Body request: AuthRequest): Response<AuthResponse>
 
@@ -23,7 +23,7 @@ interface MemesApi {
 
     @POST("auth/logout")
     suspend fun userLogout(): Response<*>
-
+    // TODO create with koin like in example https://medium.com/@harmittaa/retrofit-2-6-0-with-koin-and-coroutines-4ff45a4792fc
     companion object {
         var INSTANCE: MemesApi? = null
         fun getInstance(): MemesApi {

@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_search_filter.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
@@ -18,6 +17,7 @@ import ru.yellowshark.surfandroidschool.databinding.FragmentSearchFilterBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesFragmentDirections
+import ru.yellowshark.surfandroidschool.utils.SingleGson
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
@@ -28,7 +28,7 @@ class MemesSearchFilterFragment : Fragment(R.layout.fragment_search_filter) {
     private lateinit var searchView: SearchView
     private lateinit var searchItem: MenuItem
     private val memesAdapter = MemesAdapter()
-    private val gson by lazy { Gson() }
+    private val gson by lazy { SingleGson.getInstance() }
     private val viewStateObserver = Observer<ViewState> { state ->
         when (state) {
             is ViewState.Success -> showResults()
