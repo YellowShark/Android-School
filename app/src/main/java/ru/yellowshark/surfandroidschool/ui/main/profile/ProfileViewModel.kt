@@ -45,7 +45,7 @@ class ProfileViewModel(
         this.viewModelScope.launch(Dispatchers.IO) {
             val result = repository.logout()
             _viewState.postValue(
-                if (result is Result.Success) ViewState.Destroy else ViewState.Error
+                if (result is Result.Success) ViewState.Destroy else ViewState.Error()
             )
         }
     }

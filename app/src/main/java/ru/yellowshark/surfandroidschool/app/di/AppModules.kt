@@ -5,6 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 import ru.yellowshark.surfandroidschool.data.db.MemesDatabase
+import ru.yellowshark.surfandroidschool.data.network.ConnectivityInterceptor
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
 import ru.yellowshark.surfandroidschool.data.repository.Repository
@@ -27,7 +28,8 @@ val repositoryModule = module {
 }
 
 val networkModule = module {
-    single { MemesApi.getInstance() }
+    single { ConnectivityInterceptor(androidContext()) }
+    single { MemesApi.getInstance(get()) }
 }
 
 val sessionModule = module {

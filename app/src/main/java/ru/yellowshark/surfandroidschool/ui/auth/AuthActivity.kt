@@ -32,7 +32,7 @@ class AuthActivity: AppCompatActivity() {
                 hideProgressButton()
                 openMemesActivity()
             }
-            is ViewState.Error -> showError()
+            is ViewState.Error -> showError(state.msg)
         }
     }
 
@@ -97,10 +97,10 @@ class AuthActivity: AppCompatActivity() {
         }
     }
 
-    private fun showError() {
+    private fun showError(msg: String?) {
         with(binding) {
             hideProgressButton()
-            applicationContext.showErrorSnackbar(root, getString(R.string.error_wrong_data_msg))
+            applicationContext.showErrorSnackbar(root, msg ?: getString(R.string.error_wrong_data_msg))
         }
     }
 

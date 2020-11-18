@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import ru.yellowshark.surfandroidschool.data.repository.Repository
 import ru.yellowshark.surfandroidschool.domain.Result
 import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.internal.NoConnectivityException
 
 class AuthViewModel(
     private val repository: Repository
@@ -26,8 +27,10 @@ class AuthViewModel(
             val result = repository.login(login, password)
             if (result is Result.Success<*>)
                 _authState.postValue(ViewState.Success)
-            else
-                _authState.postValue(ViewState.Error)
+            else when ((result as Result.Error).exception) {
+                is NoConnectivityException -> _authState.postValue(ViewState.Error(msg = "Нет подключения к интернету"))
+                else -> _authState.postValue(ViewState.Error())
+            }
         }
     }
 

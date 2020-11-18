@@ -30,7 +30,7 @@ class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes), SwipeRef
         when (state) {
             is ViewState.Loading -> showLoading()
             is ViewState.Success -> showContent()
-            is ViewState.Error -> showError()
+            is ViewState.Error -> showError(state.msg)
         }
         hideRefresher()
     }
@@ -50,11 +50,12 @@ class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes), SwipeRef
         }
     }
 
-    private fun showError() {
+    private fun showError(msg: String?) {
         with(binding) {
             progressBar.root.visibility = View.GONE
             memeListRv.visibility = View.GONE
             errorTextTv.visibility = View.VISIBLE
+            errorTextTv.text = msg ?: getString(R.string.error_fail_load_msg)
         }
     }
 

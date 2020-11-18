@@ -1,6 +1,7 @@
 package ru.yellowshark.surfandroidschool.data.network
 
 import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -26,14 +27,18 @@ interface MemesApi {
     // TODO create with koin like in example https://medium.com/@harmittaa/retrofit-2-6-0-with-koin-and-coroutines-4ff45a4792fc
     companion object {
         var INSTANCE: MemesApi? = null
-        fun getInstance(): MemesApi {
-
+        fun getInstance(connectivityInterceptor: ConnectivityInterceptor): MemesApi {
             if (INSTANCE == null) {
                 val gson = GsonBuilder()
                     .setLenient()
                     .create()
 
+                val okHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(connectivityInterceptor)
+                    .build()
+
                 val retrofit = Retrofit.Builder()
+                    .client(okHttpClient)
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -41,9 +46,7 @@ interface MemesApi {
 
                 return retrofit.create(MemesApi::class.java)
             }
-
             return INSTANCE!!
         }
     }
-
 }

@@ -26,7 +26,7 @@ class MemeSearchFilterViewModel(
                 _filterViewState.postValue(ViewState.Success)
                 filteredMemesLiveData.postValue(result)
             } else {
-                _filterViewState.postValue(ViewState.Error)
+                _filterViewState.postValue(ViewState.Error())
             }
         }
     }

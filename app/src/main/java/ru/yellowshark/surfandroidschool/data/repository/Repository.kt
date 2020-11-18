@@ -8,49 +8,62 @@ import ru.yellowshark.surfandroidschool.data.network.auth.request.AuthRequest
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.Result
 import ru.yellowshark.surfandroidschool.domain.User
+import ru.yellowshark.surfandroidschool.internal.NoConnectivityException
+import ru.yellowshark.surfandroidschool.internal.NothingFoundException
 
 class Repository(
     private val memesApi: MemesApi,
     private val memesDao: MemesDao,
     private val sessionManager: SessionManager
 ) {
-    // TODO check is Internet switch on
-    suspend fun login(login: String, password: String): Result<Nothing> {
-        val response = memesApi.userAuth(
-            AuthRequest(login, password)
-        )
-        return if (response.isSuccessful) {
-            response.body()?.let {
-                sessionManager.saveUser(
-                    token = it.accessToken,
-                    user = it.userInfo.fromResponseUserInfoToDomainUser()
-                )
-            }
-            Result.Success()
-        } else {
-            Result.Error
+    suspend fun login(login: String, password: String): Result<*> {
+        return try {
+            val response = memesApi.userAuth(
+                AuthRequest(login, password)
+            )
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    sessionManager.saveUser(
+                        token = it.accessToken,
+                        user = it.userInfo.fromResponseUserInfoToDomainUser()
+                    )
+                }
+                Result.Success<Nothing>()
+            } else
+                Result.Error()
+        } catch (e: NoConnectivityException) {
+            Result.Error(e)
         }
+
     }
 
-    suspend fun logout(): Result<Nothing> {
-        val response = memesApi.userLogout()
-        return if (response.isSuccessful) {
-            sessionManager.forgetUser()
-            Result.Success()
-        } else
-            Result.Error
+    suspend fun logout(): Result<*> {
+        return try {
+            val response = memesApi.userLogout()
+            if (response.isSuccessful) {
+                sessionManager.forgetUser()
+                Result.Success<Nothing>()
+            } else
+                Result.Error()
+        } catch (e: NoConnectivityException) {
+            Result.Error(e)
+        }
     }
 
     fun getLastSessionUserInfo(): User? = sessionManager.fetchUserInfo()
 
     fun getLastSessionToken(): String? = sessionManager.fetchAuthToken()
 
-    suspend fun fetchPopularMemes(): Result<List<Meme>> {
-        val response = memesApi.getPopularMemes()
-        return if (response.isSuccessful) {
-            Result.Success(response.body()?.fromResponseMemeListToDomainMemeList())
-        } else
-            Result.Error
+    suspend fun fetchPopularMemes(): Result<*> {
+        return try {
+            val response = memesApi.getPopularMemes()
+            if (response.isSuccessful) {
+                Result.Success(response.body()?.fromResponseMemeListToDomainMemeList())
+            } else
+                Result.Error(NothingFoundException())
+        } catch (e: NoConnectivityException) {
+            Result.Error(e)
+        }
     }
 
     suspend fun saveMeme(entityMeme: EntityLocalMeme) {
