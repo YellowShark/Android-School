@@ -2,10 +2,7 @@ package ru.yellowshark.surfandroidschool.data.repository
 
 import ru.yellowshark.surfandroidschool.data.db.MemesDao
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
-import ru.yellowshark.surfandroidschool.data.network.MemesApi
-import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
-import ru.yellowshark.surfandroidschool.data.network.NothingFoundException
-import ru.yellowshark.surfandroidschool.data.network.SessionManager
+import ru.yellowshark.surfandroidschool.data.network.*
 import ru.yellowshark.surfandroidschool.data.network.auth.request.AuthRequest
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.Result
@@ -13,12 +10,13 @@ import ru.yellowshark.surfandroidschool.domain.User
 
 class Repository(
     private val memesApi: MemesApi,
+    private val authApi: AuthApi,
     private val memesDao: MemesDao,
     private val sessionManager: SessionManager
 ) {
     suspend fun login(login: String, password: String): Result<*> {
         return try {
-            val response = memesApi.userAuth(
+            val response = authApi.userAuth(
                 AuthRequest(login, password)
             )
             if (response.isSuccessful) {
@@ -39,7 +37,7 @@ class Repository(
 
     suspend fun logout(): Result<*> {
         return try {
-            val response = memesApi.userLogout()
+            val response = authApi.userLogout()
             if (response.isSuccessful) {
                 sessionManager.forgetUser()
                 Result.Success<Nothing>()

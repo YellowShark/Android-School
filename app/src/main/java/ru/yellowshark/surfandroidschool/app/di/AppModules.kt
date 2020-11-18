@@ -1,10 +1,15 @@
 package ru.yellowshark.surfandroidschool.app.di
 
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import ru.yellowshark.surfandroidschool.data.db.MemesDatabase
+import ru.yellowshark.surfandroidschool.data.network.AuthApi
 import ru.yellowshark.surfandroidschool.data.network.ConnectivityInterceptor
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
@@ -14,6 +19,8 @@ import ru.yellowshark.surfandroidschool.ui.main.create.CreateMemeViewModel
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesViewModel
 import ru.yellowshark.surfandroidschool.ui.main.popular.search.MemeSearchFilterViewModel
 import ru.yellowshark.surfandroidschool.ui.main.profile.ProfileViewModel
+import ru.yellowshark.surfandroidschool.utils.BASE_URL
+import ru.yellowshark.surfandroidschool.utils.SingleGson
 
 val viewModelsModule = module {
     viewModel { AuthViewModel(get()) }
@@ -24,12 +31,7 @@ val viewModelsModule = module {
 }
 
 val repositoryModule = module {
-    single { Repository(get(), get(), get()) }
-}
-
-val networkModule = module {
-    single { ConnectivityInterceptor(androidContext()) }
-    single { MemesApi.getInstance(get()) }
+    single { Repository(get(), get(), get(), get()) }
 }
 
 val sessionModule = module {
@@ -39,3 +41,31 @@ val sessionModule = module {
 val daoModule = module {
     single { MemesDatabase.invoke(androidContext()).memesDao() }
 }
+
+val networkModule = module {
+    single { ConnectivityInterceptor(androidContext()) }
+    factory { provideOkHttpClient(get()) }
+    single { provideRetrofit(get()) }
+    factory { provideMemesApi(get()) }
+    factory { provideAuthApi(get()) }
+}
+
+fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    val gson = SingleGson.getInstance()
+    return Retrofit.Builder()
+        .client(okHttpClient)
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .build()
+}
+
+fun provideOkHttpClient(connectivityInterceptor: ConnectivityInterceptor): OkHttpClient {
+    return OkHttpClient.Builder()
+        .addInterceptor(connectivityInterceptor)
+        .build()
+}
+
+fun provideMemesApi(retrofit: Retrofit): MemesApi = retrofit.create(MemesApi::class.java)
+
+fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
