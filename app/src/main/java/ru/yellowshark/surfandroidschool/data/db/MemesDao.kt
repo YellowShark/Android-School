@@ -23,11 +23,11 @@ interface MemesDao {
     suspend fun updateMemeByDate(isLiked: Boolean, createdDate: Int)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun cacheMemes(memes: List<EntityCachedMeme>)
+    fun cacheMemes(memes: List<EntityCachedMeme>)
 
     @Query("SELECT title, description, photoUrl, createdDate, isFavorite FROM $TABLE_CACHED_MEMES WHERE title LIKE :title")
     suspend fun getCachedMemesByTitle(title: String): List<Meme>?
 
     @Query("SELECT title, description, photoUrl, createdDate, isFavorite FROM $TABLE_CACHED_MEMES")
-    suspend fun getCachedMemes(): List<Meme>?
+    fun getCachedMemes(): List<Meme>?
 }

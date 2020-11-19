@@ -11,7 +11,6 @@ import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.ActivityMemesBinding
 
 class MemesActivity : AppCompatActivity() {
-
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMemesBinding
 
@@ -39,7 +38,6 @@ class MemesActivity : AppCompatActivity() {
 
     private fun setupBottomNavMenu() =
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
-
 
     override fun onSupportNavigateUp() = navController.navigateUp()
 }

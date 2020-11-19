@@ -22,7 +22,6 @@ import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 
 
 class AuthActivity: AppCompatActivity() {
-
     private lateinit var binding: ActivityAuthBinding
     private val viewModel: AuthViewModel by viewModel()
     private val stateObserver = Observer<ViewState> { state ->

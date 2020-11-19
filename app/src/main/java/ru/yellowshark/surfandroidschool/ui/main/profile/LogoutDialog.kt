@@ -24,5 +24,4 @@ class LogoutDialog(
             .setCancelable(true)
             .create()
     }
-
 }

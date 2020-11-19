@@ -19,7 +19,9 @@ import ru.yellowshark.surfandroidschool.utils.SingleGson
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class PopularMemesFragment : Fragment(R.layout.fragment_popular_memes), SwipeRefreshLayout.OnRefreshListener,
+class PopularMemesFragment :
+    Fragment(R.layout.fragment_popular_memes),
+    SwipeRefreshLayout.OnRefreshListener,
     MenuItem.OnMenuItemClickListener {
 
     private val viewModel: PopularMemesViewModel by viewModel()

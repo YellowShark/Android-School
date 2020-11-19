@@ -14,7 +14,9 @@ import ru.yellowshark.surfandroidschool.utils.SingleGson
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class DetailMemeFragment : Fragment(R.layout.fragment_detail_meme), MenuItem.OnMenuItemClickListener {
+class DetailMemeFragment :
+    Fragment(R.layout.fragment_detail_meme),
+    MenuItem.OnMenuItemClickListener {
 
     private val binding: FragmentDetailMemeBinding by viewBinding(FragmentDetailMemeBinding::bind)
     private val gson by lazy { SingleGson.getInstance() }

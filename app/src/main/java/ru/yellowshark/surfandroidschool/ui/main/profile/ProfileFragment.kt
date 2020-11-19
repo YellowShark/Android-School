@@ -20,7 +20,9 @@ import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class ProfileFragment : Fragment(R.layout.fragment_profile), MenuItem.OnMenuItemClickListener {
+class ProfileFragment :
+    Fragment(R.layout.fragment_profile),
+    MenuItem.OnMenuItemClickListener {
 
     private val binding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
     private val gson by lazy { SingleGson.getInstance() }

@@ -22,7 +22,6 @@ import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
 class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
-
     private val PERMISSION_CAMERA_REQUEST_CODE: Int = 1002
     private val PERMISSION_STORAGE_REQUEST_CODE: Int = 1001
 

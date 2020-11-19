@@ -11,7 +11,6 @@ import ru.yellowshark.surfandroidschool.databinding.ItemMemeBinding
 import ru.yellowshark.surfandroidschool.domain.Meme
 
 class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
-
     var onItemClick: ((Meme, View) -> Unit)? = null
     var onLikeClick: ((Meme) -> Unit)? = null
     var onShareClick: ((Meme) -> Unit)? = null

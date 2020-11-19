@@ -3,14 +3,13 @@ package ru.yellowshark.surfandroidschool.ui.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
 import ru.yellowshark.surfandroidschool.data.repository.Repository
-import ru.yellowshark.surfandroidschool.domain.Result
 import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.utils.ERROR_NO_INTERNET
 
 class AuthViewModel(
     private val repository: Repository
@@ -20,20 +19,30 @@ class AuthViewModel(
     val authViewState: LiveData<ViewState>
         get() = _authState
 
-    fun login(login: String, password: String) {
-        this.viewModelScope.launch(Dispatchers.IO) {
-            _authState.postValue(ViewState.Loading)
-            delay(500)
-            val result = repository.login(login, password)
-            if (result is Result.Success<*>)
-                _authState.postValue(ViewState.Success)
-            else when ((result as Result.Error).exception) {
-                is NoConnectivityException -> _authState.postValue(ViewState.Error(msg = "Нет подключения к интернету"))
-                else -> _authState.postValue(ViewState.Error())
-            }
-        }
-    }
+    private val disposables = CompositeDisposable()
 
     fun getLastSessionToken(): String? = repository.getLastSessionToken()
 
+    fun login(login: String, password: String) {
+        disposables.add(
+            repository.login(login, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { _authState.value = ViewState.Loading }
+                .subscribe(
+                    { _authState.postValue(ViewState.Success) },
+                    { t ->
+                        val error = when (t) {
+                            is NoConnectivityException -> ViewState.Error(msg = ERROR_NO_INTERNET)
+                            else -> ViewState.Error()
+                        }
+                        _authState.postValue(error)
+                    }
+                )
+        )
+    }
+
+    override fun onCleared() {
+        disposables.clear()
+    }
 }

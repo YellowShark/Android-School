@@ -3,17 +3,16 @@ package ru.yellowshark.surfandroidschool.ui.main.popular.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
-import ru.yellowshark.surfandroidschool.data.network.NothingFoundException
 import ru.yellowshark.surfandroidschool.data.repository.Repository
 import ru.yellowshark.surfandroidschool.domain.Meme
-import ru.yellowshark.surfandroidschool.domain.Result
 import ru.yellowshark.surfandroidschool.domain.User
 import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.utils.ERROR_NO_INTERNET
+import java.util.concurrent.TimeUnit
 
 class PopularMemesViewModel(
     private val repository: Repository
@@ -24,32 +23,43 @@ class PopularMemesViewModel(
 
     val memesLiveData = MutableLiveData<List<Meme>>()
 
+    private val disposables = CompositeDisposable()
+
     init {
         requestPopularMemes()
     }
 
+    fun getLastSessionUserInfo(): User? = repository.getLastSessionUserInfo()
+
     fun requestPopularMemes() {
-        this.viewModelScope.launch(Dispatchers.IO) {
-            _memesListViewState.postValue(ViewState.Loading)
-            delay(500)
-            val result = repository.fetchPopularMemes()
-            if (result is Result.Success) {
-                _memesListViewState.postValue(ViewState.Success)
-                memesLiveData.postValue(result.data as List<Meme>)
-                repository.cacheMemes(result.data)
-            } else when ((result as Result.Error).exception) {
-                is NoConnectivityException -> {
-                    _memesListViewState.postValue(ViewState.Error(msg = "Нет подключения к интернету"))
-                }
-                is NothingFoundException -> {
-                    _memesListViewState.postValue(ViewState.Error())
-                }
-                else -> {
-                    _memesListViewState.postValue(ViewState.Error())
-                }
-            }
-        }
+        disposables.add(
+            repository.fetchPopularMemes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { _memesListViewState.value = ViewState.Loading }
+                .delay(500, TimeUnit.MILLISECONDS)
+                .subscribe(
+                    { memes ->
+                        _memesListViewState.postValue(ViewState.Success)
+                        memesLiveData.postValue(memes)
+                        repository.cacheMemes(memes)
+                    },
+                    { t ->
+                        val error = when (t) {
+                            is NoConnectivityException -> {
+                               ViewState.Error(msg = ERROR_NO_INTERNET)
+                            }
+                            else -> {
+                                ViewState.Error()
+                            }
+                        }
+                        _memesListViewState.postValue(error)
+                    }
+                )
+        )
     }
 
-    fun getLastSessionUserInfo(): User? = repository.getLastSessionUserInfo()
+    override fun onCleared() {
+        disposables.clear()
+    }
 }

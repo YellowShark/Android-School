@@ -22,7 +22,6 @@ import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
 class MemesSearchFilterFragment : Fragment(R.layout.fragment_search_filter) {
-
     private val viewModel: MemeSearchFilterViewModel by viewModel()
     private val binding: FragmentSearchFilterBinding by viewBinding(FragmentSearchFilterBinding::bind)
     private lateinit var searchView: SearchView
