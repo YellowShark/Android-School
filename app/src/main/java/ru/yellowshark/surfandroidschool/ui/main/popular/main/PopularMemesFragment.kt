@@ -11,11 +11,12 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.gson.Gson
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
 import ru.yellowshark.surfandroidschool.domain.ViewState
-import ru.yellowshark.surfandroidschool.utils.SingleGson
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
@@ -26,7 +27,7 @@ class PopularMemesFragment :
 
     private val viewModel: PopularMemesViewModel by viewModel()
     private val binding: FragmentPopularMemesBinding by viewBinding(FragmentPopularMemesBinding::bind)
-    private val gson by lazy { SingleGson.getInstance() }
+    private val gson: Gson by inject()
     private val memesAdapter = MemesAdapter()
     private val viewStateObserver = Observer<ViewState> { state ->
         when (state) {

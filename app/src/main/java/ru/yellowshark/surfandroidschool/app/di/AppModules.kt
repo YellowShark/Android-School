@@ -1,5 +1,6 @@
 package ru.yellowshark.surfandroidschool.app.di
 
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -20,7 +21,6 @@ import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesViewMod
 import ru.yellowshark.surfandroidschool.ui.main.popular.search.MemeSearchFilterViewModel
 import ru.yellowshark.surfandroidschool.ui.main.profile.ProfileViewModel
 import ru.yellowshark.surfandroidschool.utils.BASE_URL
-import ru.yellowshark.surfandroidschool.utils.SingleGson
 
 val viewModelsModule = module {
     viewModel { AuthViewModel(get()) }
@@ -35,7 +35,7 @@ val repositoryModule = module {
 }
 
 val sessionModule = module {
-    single { SessionManager(androidApplication()) }
+    single { SessionManager(androidApplication(), get()) }
 }
 
 val daoModule = module {
@@ -44,14 +44,14 @@ val daoModule = module {
 
 val networkModule = module {
     single { ConnectivityInterceptor(androidContext()) }
-    factory { provideOkHttpClient(get()) }
-    single { provideRetrofit(get()) }
+    single { provideOkHttpClient(get()) }
+    single { Gson() }
+    single { provideRetrofit(get(), get()) }
     factory { provideMemesApi(get()) }
     factory { provideAuthApi(get()) }
 }
 
-fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-    val gson = SingleGson.getInstance()
+fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
     return Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl(BASE_URL)

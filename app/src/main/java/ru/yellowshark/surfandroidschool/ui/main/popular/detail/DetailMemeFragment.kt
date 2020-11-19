@@ -6,11 +6,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.gson.Gson
+import org.koin.android.ext.android.inject
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.User
-import ru.yellowshark.surfandroidschool.utils.SingleGson
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
@@ -19,7 +20,7 @@ class DetailMemeFragment :
     MenuItem.OnMenuItemClickListener {
 
     private val binding: FragmentDetailMemeBinding by viewBinding(FragmentDetailMemeBinding::bind)
-    private val gson by lazy { SingleGson.getInstance() }
+    private val gson: Gson by inject()
     private val args: DetailMemeFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
