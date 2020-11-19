@@ -8,9 +8,10 @@ Surf Android school application
 
 Технологии:
 * Koin for DI
-* viewBinding, dataBinding
+* ViewBinding, DataBinding
 * navigation component
 * room db
-* retrofit2 + Gson for network requests
+* Retrofit2 + Gson for network requests
 * Glide for loading photos
-* kotlin coroutines + liveData for multithreding
+* Kotlin coroutines + RxAndroid for multithreding
+* LiveData
