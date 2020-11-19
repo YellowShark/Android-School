@@ -44,7 +44,7 @@ val daoModule = module {
 
 val networkModule = module {
     single { ConnectivityInterceptor(androidContext()) }
-    single { provideOkHttpClient(get()) }
+    factory { provideOkHttpClient(get()) }
     single { Gson() }
     single { provideRetrofit(get(), get()) }
     factory { provideMemesApi(get()) }
