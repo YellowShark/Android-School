@@ -1,17 +1,21 @@
-Surf Android school application
+<h1>Surf Android school application</h1>
 
-В этом клиент-серверном приложении вы можете войти/выйти из аккаунта, загрузить мемы с сервера, создать свои собственнные мемы и добавить их в локальную базу данных.
+<h3>В этом клиент-серверном приложении вы можете войти/выйти из аккаунта, загрузить мемы с сервера, создать свои собственнные мемы и добавить их в локальную базу данных.</h3>
 
-Архитектура: 
-* clean
-* MVVM
+<h2>Архитектура:</h2>
+<ul>
+  <li>clean</li>
+  <li>MVVM</li>
+</ul>
 
-Технологии:
-* Koin for DI
-* ViewBinding, DataBinding
-* navigation component
-* room db
-* Retrofit2 + Gson for network requests
-* Glide for loading photos
-* Kotlin coroutines + RxAndroid for multithreding
-* LiveData
+<h2>Технологии:</h2>
+<ul>
+  <li>Koin for DI</li>
+  <li>ViewBinding, DataBinding</li>
+  <li>navigation component</li>
+  <li>room db</li>
+  <li>Retrofit2 + Gson for network requests</li>
+  <li>Glide for loading photos</li>
+  <li>Kotlin coroutines + RxAndroid for multithreding</li>
+  <li>LiveData</li>
+</ul>
