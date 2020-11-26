@@ -76,12 +76,6 @@ class PopularMemesFragment :
         observeViewModel()
     }
 
-    private fun updateList() {
-        with(viewModel) {
-            requestPopularMemes()
-        }
-    }
-
     private fun observeViewModel() {
         with(viewModel) {
             memesListViewState.observe(viewLifecycleOwner, viewStateObserver)
@@ -103,6 +97,14 @@ class PopularMemesFragment :
 
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        initAdapter()
+        binding.memeListRv.apply {
+            layoutManager = gridLayoutManager
+            adapter = memesAdapter
+        }
+    }
+
+    private fun initAdapter() {
         memesAdapter.apply {
             onItemClick = { meme, itemView ->
                 val extras = FragmentNavigatorExtras(itemView to meme.photoUrl)
@@ -124,11 +126,6 @@ class PopularMemesFragment :
                 activity?.shareMeme(meme)
             }
         }
-
-        binding.memeListRv.apply {
-            layoutManager = gridLayoutManager
-            adapter = memesAdapter
-        }
     }
 
     private fun initRefresher() {
@@ -143,6 +140,12 @@ class PopularMemesFragment :
         Handler().postDelayed({
             updateList()
         }, 500)
+    }
+
+    private fun updateList() {
+        with(viewModel) {
+            requestPopularMemes()
+        }
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

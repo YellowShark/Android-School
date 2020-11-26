@@ -32,7 +32,7 @@ class Repository(
 
     fun forgetUser() = sessionManager.forgetUser()
 
-    fun fetchPopularMemes(): Single<List<Meme>> {
+    fun getPopularMemes(): Single<List<Meme>> {
         return memesApi.getPopularMemes().map { it.fromResponseMemeListToDomainMemeList() }
     }
 

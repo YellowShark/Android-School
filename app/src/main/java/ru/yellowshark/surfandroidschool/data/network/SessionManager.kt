@@ -6,11 +6,14 @@ import com.google.gson.Gson
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.domain.User
 
+private const val USER_TOKEN = "user_token"
+private const val USER_INFO = "user_info"
+
 class SessionManager(
     val context: Context,
     val gson: Gson
 ) {
-    private var prefs: SharedPreferences =
+    private val prefs: SharedPreferences =
         context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
     fun saveUser(token: String, user: User) {
@@ -48,10 +51,5 @@ class SessionManager(
         editor.putString(USER_INFO, null)
         editor.putString(USER_TOKEN, null)
         editor.apply()
-    }
-
-    companion object {
-        const val USER_TOKEN = "user_token"
-        const val USER_INFO = "user_info"
     }
 }

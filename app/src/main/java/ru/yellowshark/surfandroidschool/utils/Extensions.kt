@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import ru.yellowshark.surfandroidschool.R
+import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.ui.main.create.AddPictureDialogFragment
 import java.io.File
@@ -60,4 +61,11 @@ fun Context.savePhotoPath(currentPhotoPath: String) {
 fun Context.getPhotoPath(): String {
     return this.getSharedPreferences(this.getString(R.string.app_name), Context.MODE_PRIVATE)
         ?.getString(AddPictureDialogFragment.PHOTO_PATH_KEY, "") ?: ""
+}
+
+fun Throwable.getMessage(): String? {
+    return when (this) {
+        is NoConnectivityException -> ERROR_NO_INTERNET
+        else -> null
+    }
 }

@@ -21,10 +21,10 @@ import ru.yellowshark.surfandroidschool.utils.getPhotoPath
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
-    private val PERMISSION_CAMERA_REQUEST_CODE: Int = 1002
-    private val PERMISSION_STORAGE_REQUEST_CODE: Int = 1001
+private const val PERMISSION_CAMERA_REQUEST_CODE: Int = 1002
+private const val PERMISSION_STORAGE_REQUEST_CODE: Int = 1001
 
+class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
     private val viewModel: CreateMemeViewModel by viewModel()
     private val binding: FragmentCreateMemeBinding by viewBinding(FragmentCreateMemeBinding::bind)
     private lateinit var itemCreate: MenuItem

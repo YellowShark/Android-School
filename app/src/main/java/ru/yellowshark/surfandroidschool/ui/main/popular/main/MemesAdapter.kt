@@ -49,15 +49,6 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
     class MemeViewHolder(private val binding: ItemMemeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        companion object {
-            fun create(parent: ViewGroup): MemeViewHolder {
-                val inflater = LayoutInflater.from(parent.context)
-                val binding: ItemMemeBinding =
-                    DataBindingUtil.inflate(inflater, R.layout.item_meme, parent, false)
-                return MemeViewHolder(binding)
-            }
-        }
-
         fun bind(meme: Meme) {
             with(binding) {
                 binding.root.transitionName = meme.photoUrl
@@ -73,5 +64,13 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
             binding.executePendingBindings()
         }
 
+        companion object {
+            fun create(parent: ViewGroup): MemeViewHolder {
+                val inflater = LayoutInflater.from(parent.context)
+                val binding: ItemMemeBinding =
+                    DataBindingUtil.inflate(inflater, R.layout.item_meme, parent, false)
+                return MemeViewHolder(binding)
+            }
+        }
     }
 }

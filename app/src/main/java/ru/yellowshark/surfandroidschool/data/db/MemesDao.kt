@@ -8,8 +8,8 @@ import ru.yellowshark.surfandroidschool.data.db.entity.EntityCachedMeme
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 import ru.yellowshark.surfandroidschool.domain.Meme
 
-const val TABLE_LOCAL_MEMES = "table_local_memes"
-const val TABLE_CACHED_MEMES = "table_cached_memes"
+private const val TABLE_LOCAL_MEMES = "table_local_memes"
+private const val TABLE_CACHED_MEMES = "table_cached_memes"
 
 @Dao
 interface MemesDao {

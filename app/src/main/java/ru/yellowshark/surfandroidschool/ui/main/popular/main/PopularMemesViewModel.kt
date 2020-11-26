@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
 import ru.yellowshark.surfandroidschool.data.repository.Repository
 import ru.yellowshark.surfandroidschool.domain.Meme
 import ru.yellowshark.surfandroidschool.domain.User
 import ru.yellowshark.surfandroidschool.domain.ViewState
-import ru.yellowshark.surfandroidschool.utils.ERROR_NO_INTERNET
+import ru.yellowshark.surfandroidschool.utils.getMessage
 import java.util.concurrent.TimeUnit
 
 class PopularMemesViewModel(
@@ -33,30 +32,22 @@ class PopularMemesViewModel(
 
     fun requestPopularMemes() {
         disposables.add(
-            repository.fetchPopularMemes()
+            repository.getPopularMemes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { _memesListViewState.value = ViewState.Loading }
                 .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe(
-                    { memes ->
-                        _memesListViewState.postValue(ViewState.Success)
-                        memesLiveData.postValue(memes)
-                        repository.cacheMemes(memes)
-                    },
-                    { t ->
-                        val error = when (t) {
-                            is NoConnectivityException -> {
-                               ViewState.Error(msg = ERROR_NO_INTERNET)
-                            }
-                            else -> {
-                                ViewState.Error()
-                            }
-                        }
-                        _memesListViewState.postValue(error)
-                    }
+                    { memes -> postSuccess(memes) },
+                    { t -> _memesListViewState.postValue(ViewState.Error(t.getMessage())) }
                 )
         )
+    }
+
+    private fun postSuccess(memes: List<Meme>) {
+        _memesListViewState.postValue(ViewState.Success)
+        memesLiveData.postValue(memes)
+        repository.cacheMemes(memes)
     }
 
     override fun onCleared() {
