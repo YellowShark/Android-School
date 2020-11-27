@@ -1,4 +1,4 @@
-package ru.yellowshark.surfandroidschool.domain
+package ru.yellowshark.surfandroidschool.domain.meme.model
 
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityCachedMeme
 

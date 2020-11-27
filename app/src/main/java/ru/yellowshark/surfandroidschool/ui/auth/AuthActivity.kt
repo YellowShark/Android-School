@@ -14,6 +14,7 @@ import ru.tinkoff.decoro.watchers.FormatWatcher
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.ActivityAuthBinding
+import ru.yellowshark.surfandroidschool.domain.Errors
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.ui.main.MemesActivity
 import ru.yellowshark.surfandroidschool.utils.FORMATTED_PHONE_NUMBER_LENGTH
@@ -31,7 +32,7 @@ class AuthActivity: AppCompatActivity() {
                 hideProgressButton()
                 openMemesActivity()
             }
-            is ViewState.Error -> showError(state.msg)
+            is ViewState.Error -> showError(state.error)
         }
     }
 
@@ -96,11 +97,16 @@ class AuthActivity: AppCompatActivity() {
         }
     }
 
-    private fun showError(msg: String?) {
+    private fun showError(error: Errors) {
         with(binding) {
             hideProgressButton()
-            applicationContext.showErrorSnackbar(root, msg ?: getString(R.string.error_wrong_data_msg))
+            applicationContext.showErrorSnackbar(root, getErrorMessageText(error))
         }
+    }
+
+    private fun getErrorMessageText(error: Errors) = when(error) {
+        Errors.SERVER_ERROR -> getString(R.string.error_fail_load_msg)
+        Errors.NO_INTERNET -> getString(R.string.error_no_internet)
     }
 
     private fun showProgressButton() {

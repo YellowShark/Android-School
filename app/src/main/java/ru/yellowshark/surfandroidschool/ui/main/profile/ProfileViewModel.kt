@@ -2,48 +2,45 @@ package ru.yellowshark.surfandroidschool.ui.main.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
-import ru.yellowshark.surfandroidschool.data.repository.Repository
-import ru.yellowshark.surfandroidschool.domain.Meme
+import ru.yellowshark.surfandroidschool.domain.Errors
 import ru.yellowshark.surfandroidschool.domain.ViewState
-import ru.yellowshark.surfandroidschool.utils.ERROR_NO_INTERNET
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
+import ru.yellowshark.surfandroidschool.domain.repository.Repository
+import ru.yellowshark.surfandroidschool.ui.base.BaseViewModel
+import ru.yellowshark.surfandroidschool.utils.runInBackground
 
 class ProfileViewModel(
     private val repository: Repository
-) : ViewModel() {
+) : BaseViewModel() {
 
     val viewState: LiveData<ViewState> get() = _viewState
     private val _viewState = MutableLiveData<ViewState>()
     val memesLiveData = MutableLiveData<List<Meme>>()
-    val userInfo get() = repository.getLastSessionUserInfo()
-    private val disposables = CompositeDisposable()
+    val userInfo = repository.getLastSessionUserInfo()
 
     init {
         loadLocalMemes()
     }
 
     private fun loadLocalMemes() {
-        this.viewModelScope.launch(Dispatchers.IO) {
-            _viewState.postValue(ViewState.Loading)
-            delay(500)
-            val result = repository.getLocalMemes()
-            memesLiveData.postValue(result)
-            _viewState.postValue(ViewState.Success)
-        }
+        disposables.add(
+            repository.getLocalMemes()
+                .runInBackground()
+                .doOnSubscribe { _viewState.postValue(ViewState.Loading) }
+                .subscribe { memes ->
+                    memesLiveData.postValue(memes)
+                    _viewState.postValue(ViewState.Success)
+                }
+        )
     }
 
     fun updateLike(meme: Meme) {
-        this.viewModelScope.launch(Dispatchers.IO) {
-            repository.updateLocalMeme(meme)
-        }
+        disposables.add(
+            repository.updateLocalMeme(meme).runInBackground().subscribe()
+        )
     }
 
     fun logout() {
@@ -58,16 +55,12 @@ class ProfileViewModel(
                     },
                     { t ->
                         val error = when (t) {
-                            is NoConnectivityException -> ViewState.Error(msg = ERROR_NO_INTERNET)
-                            else -> ViewState.Error()
+                            is NoConnectivityException -> ViewState.Error(Errors.NO_INTERNET)
+                            else -> ViewState.Error(Errors.SERVER_ERROR)
                         }
                         _viewState.postValue(error)
                     }
                 )
         )
-    }
-
-    override fun onCleared() {
-        disposables.clear()
     }
 }

@@ -1,7 +1,7 @@
 package ru.yellowshark.surfandroidschool.data.network.popular.response
 
 import com.google.gson.annotations.SerializedName
-import ru.yellowshark.surfandroidschool.domain.Meme
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 
 data class ResponseMeme (
     @SerializedName("createdDate")

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.domain.User
+import ru.yellowshark.surfandroidschool.domain.user.model.User
 
 private const val USER_TOKEN = "user_token"
 private const val USER_INFO = "user_info"

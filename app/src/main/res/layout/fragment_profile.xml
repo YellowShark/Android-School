@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="ru.yellowshark.surfandroidschool.domain.User" />
+        <import type="ru.yellowshark.surfandroidschool.domain.user.model.User" />
 
         <variable
             name="user"
-            type="User" />
+            type="ru.yellowshark.surfandroidschool.domain.user.model.User" />
 
     </data>
 

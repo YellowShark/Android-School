@@ -9,7 +9,7 @@ class App : Application() {
         super.onCreate()
         startKoin(
             applicationContext,
-            listOf(viewModelsModule, repositoryModule, networkModule, sessionModule, daoModule)
+            listOf(viewModelsModule, useCasesModule, repositoryModule, networkModule, sessionModule, daoModule)
         )
     }
 }

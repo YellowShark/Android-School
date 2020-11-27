@@ -16,6 +16,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
+import ru.yellowshark.surfandroidschool.domain.Errors
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
@@ -33,7 +34,7 @@ class PopularMemesFragment :
         when (state) {
             is ViewState.Loading -> showLoading()
             is ViewState.Success -> showContent()
-            is ViewState.Error -> showError(state.msg)
+            is ViewState.Error -> showError(state.error)
         }
         hideRefresher()
     }
@@ -53,13 +54,18 @@ class PopularMemesFragment :
         }
     }
 
-    private fun showError(msg: String?) {
+    private fun showError(error: Errors) {
         with(binding) {
             progressBar.root.visibility = View.GONE
             memeListRv.visibility = View.GONE
             errorTextTv.visibility = View.VISIBLE
-            errorTextTv.text = msg ?: getString(R.string.error_fail_load_msg)
+            errorTextTv.text = getErrorMessageText(error)
         }
+    }
+
+    private fun getErrorMessageText(error: Errors) = when(error) {
+        Errors.SERVER_ERROR -> getString(R.string.error_fail_load_msg)
+        Errors.NO_INTERNET -> getString(R.string.error_no_internet)
     }
 
     private fun showLoading() {

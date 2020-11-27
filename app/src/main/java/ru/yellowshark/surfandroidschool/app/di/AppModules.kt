@@ -14,7 +14,14 @@ import ru.yellowshark.surfandroidschool.data.network.AuthApi
 import ru.yellowshark.surfandroidschool.data.network.ConnectivityInterceptor
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
-import ru.yellowshark.surfandroidschool.data.repository.Repository
+import ru.yellowshark.surfandroidschool.data.repository.RepositoryImpl
+import ru.yellowshark.surfandroidschool.domain.meme.usecase.CacheMemesUseCase
+import ru.yellowshark.surfandroidschool.domain.meme.usecase.CacheMemesUseCaseImpl
+import ru.yellowshark.surfandroidschool.domain.meme.usecase.GetPopularMemesUseCase
+import ru.yellowshark.surfandroidschool.domain.meme.usecase.GetPopularMemesUseCaseImpl
+import ru.yellowshark.surfandroidschool.domain.repository.Repository
+import ru.yellowshark.surfandroidschool.domain.user.usecase.GetUserInfoUseCase
+import ru.yellowshark.surfandroidschool.domain.user.usecase.GetUserInfoUseCaseImpl
 import ru.yellowshark.surfandroidschool.ui.auth.AuthViewModel
 import ru.yellowshark.surfandroidschool.ui.main.create.CreateMemeViewModel
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesViewModel
@@ -24,14 +31,20 @@ import ru.yellowshark.surfandroidschool.utils.BASE_URL
 
 val viewModelsModule = module {
     viewModel { AuthViewModel(get()) }
-    viewModel { PopularMemesViewModel(get()) }
+    viewModel { PopularMemesViewModel(get(), get(), get()) }
     viewModel { MemeSearchFilterViewModel(get()) }
     viewModel { CreateMemeViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
 }
 
 val repositoryModule = module {
-    single { Repository(get(), get(), get(), get()) }
+    single<Repository> { RepositoryImpl(get(), get(), get(), get()) }
+}
+
+val useCasesModule = module {
+    factory<GetPopularMemesUseCase> { GetPopularMemesUseCaseImpl(get()) }
+    factory<CacheMemesUseCase> { CacheMemesUseCaseImpl(get()) }
+    factory<GetUserInfoUseCase> { GetUserInfoUseCaseImpl(get()) }
 }
 
 val sessionModule = module {
@@ -39,7 +52,7 @@ val sessionModule = module {
 }
 
 val daoModule = module {
-    single { MemesDatabase.invoke(androidContext()).memesDao() }
+    single { MemesDatabase(androidContext()).memesDao() }
 }
 
 val networkModule = module {

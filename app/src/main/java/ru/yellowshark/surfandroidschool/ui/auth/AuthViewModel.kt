@@ -2,47 +2,38 @@ package ru.yellowshark.surfandroidschool.ui.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
-import ru.yellowshark.surfandroidschool.data.repository.Repository
+import ru.yellowshark.surfandroidschool.domain.Errors
 import ru.yellowshark.surfandroidschool.domain.ViewState
-import ru.yellowshark.surfandroidschool.utils.ERROR_NO_INTERNET
+import ru.yellowshark.surfandroidschool.domain.repository.Repository
+import ru.yellowshark.surfandroidschool.ui.base.BaseViewModel
+import ru.yellowshark.surfandroidschool.utils.runInBackground
 
 class AuthViewModel(
     private val repository: Repository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _authState = MutableLiveData<ViewState>()
     val authViewState: LiveData<ViewState>
         get() = _authState
 
-    private val disposables = CompositeDisposable()
-
-    fun getLastSessionToken(): String? = repository.getLastSessionToken()
+    fun getLastSessionToken(): String = repository.getLastSessionToken()
 
     fun login(login: String, password: String) {
         disposables.add(
             repository.login(login, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .runInBackground()
                 .doOnSubscribe { _authState.value = ViewState.Loading }
                 .subscribe(
                     { _authState.postValue(ViewState.Success) },
                     { t ->
                         val error = when (t) {
-                            is NoConnectivityException -> ViewState.Error(msg = ERROR_NO_INTERNET)
-                            else -> ViewState.Error()
+                            is NoConnectivityException -> ViewState.Error(Errors.NO_INTERNET)
+                            else -> ViewState.Error(Errors.SERVER_ERROR)
                         }
                         _authState.postValue(error)
                     }
                 )
         )
-    }
-
-    override fun onCleared() {
-        disposables.clear()
     }
 }

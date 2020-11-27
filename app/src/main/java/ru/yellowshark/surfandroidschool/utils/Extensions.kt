@@ -7,14 +7,21 @@ import android.os.Environment
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
-import ru.yellowshark.surfandroidschool.domain.Meme
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.ui.main.create.AddPictureDialogFragment
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
+fun <T> Single<T>.runInBackground() =
+    this.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+fun String.Companion.EMPTY(): String = ""
 
 fun Activity.shareMeme(meme: Meme) {
     val shareIntent: Intent = Intent().apply {
@@ -61,11 +68,4 @@ fun Context.savePhotoPath(currentPhotoPath: String) {
 fun Context.getPhotoPath(): String {
     return this.getSharedPreferences(this.getString(R.string.app_name), Context.MODE_PRIVATE)
         ?.getString(AddPictureDialogFragment.PHOTO_PATH_KEY, "") ?: ""
-}
-
-fun Throwable.getMessage(): String? {
-    return when (this) {
-        is NoConnectivityException -> ERROR_NO_INTERNET
-        else -> null
-    }
 }

@@ -2,7 +2,7 @@ package ru.yellowshark.surfandroidschool.data.network.auth.response
 
 
 import com.google.gson.annotations.SerializedName
-import ru.yellowshark.surfandroidschool.domain.User
+import ru.yellowshark.surfandroidschool.domain.user.model.User
 
 data class UserInfo(
     @SerializedName("firstName")

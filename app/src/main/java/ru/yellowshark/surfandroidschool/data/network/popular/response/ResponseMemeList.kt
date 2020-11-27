@@ -1,6 +1,6 @@
 package ru.yellowshark.surfandroidschool.data.network.popular.response
 
-import ru.yellowshark.surfandroidschool.domain.Meme
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 
 class ResponseMemeList : ArrayList<ResponseMeme>() {
 

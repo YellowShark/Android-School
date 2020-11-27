@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityCachedMeme
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 
-@Database(entities = [EntityLocalMeme::class, EntityCachedMeme::class], version = 4)
+@Database(entities = [EntityLocalMeme::class, EntityCachedMeme::class], version = 5)
 abstract class MemesDatabase : RoomDatabase() {
     abstract fun memesDao(): MemesDao
 

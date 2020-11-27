@@ -10,8 +10,8 @@ import com.google.gson.Gson
 import org.koin.android.ext.android.inject
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentDetailMemeBinding
-import ru.yellowshark.surfandroidschool.domain.Meme
-import ru.yellowshark.surfandroidschool.domain.User
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
+import ru.yellowshark.surfandroidschool.domain.user.model.User
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 

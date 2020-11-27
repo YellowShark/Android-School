@@ -7,17 +7,17 @@
 
         <import type="ru.yellowshark.surfandroidschool.utils.BindingConverters" />
 
-        <import type="ru.yellowshark.surfandroidschool.domain.User" />
+        <import type="ru.yellowshark.surfandroidschool.domain.user.model.User" />
 
-        <import type="ru.yellowshark.surfandroidschool.domain.Meme" />
+        <import type="ru.yellowshark.surfandroidschool.domain.meme.model.Meme" />
 
         <variable
             name="user"
-            type="User" />
+            type="ru.yellowshark.surfandroidschool.domain.user.model.User" />
 
         <variable
             name="meme"
-            type="Meme" />
+            type="ru.yellowshark.surfandroidschool.domain.meme.model.Meme" />
 
         <variable
             name="isLiked"
