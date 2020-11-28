@@ -19,7 +19,7 @@ class MemeSearchFilterViewModel(
     val filterViewState: LiveData<ViewState> get() = _filterViewState
     val filteredMemesLiveData = MutableLiveData<List<Meme>>()
 
-    fun getLastSessionUserInfo(): User = getUserInfoUseCase()
+    fun getUserInfo(): User = getUserInfoUseCase()
 
     fun searchMemes(title: String) {
         disposables.add(

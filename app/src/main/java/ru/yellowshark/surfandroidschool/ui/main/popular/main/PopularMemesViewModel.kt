@@ -28,7 +28,7 @@ class PopularMemesViewModel(
         requestPopularMemes()
     }
 
-    fun getLastSessionUserInfo(): User = getUserInfoUseCase()
+    fun getUserInfo(): User = getUserInfoUseCase()
 
     fun requestPopularMemes() {
         disposables.add(

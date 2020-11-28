@@ -4,19 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.google.gson.Gson
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentProfileBinding
 import ru.yellowshark.surfandroidschool.domain.Error
 import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
 import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
+import ru.yellowshark.surfandroidschool.ui.main.popular.main.AdapterFactory
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
-import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
@@ -25,8 +21,7 @@ class ProfileFragment :
     MenuItem.OnMenuItemClickListener {
 
     private val binding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
-    private val gson: Gson by inject()
-    private val memesAdapter = MemesAdapter()
+    private lateinit var memesAdapter: MemesAdapter
     private val viewModel: ProfileViewModel by viewModel()
 
     override fun showError(error: Error) {
@@ -99,23 +94,7 @@ class ProfileFragment :
         with(binding) {
             val gridLayoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            memesAdapter.apply {
-                onItemClick = { meme, itemView ->
-                    val extras = FragmentNavigatorExtras(itemView to meme.photoUrl)
-                    val user = viewModel.getUserInfo()
-                    val action =
-                        ProfileFragmentDirections.actionOpenDetails(
-                            gson.toJson(meme),
-                            gson.toJson(user)
-                        )
-                    view?.let {
-                        Navigation.findNavController(it)
-                            .navigate(R.id.destination_meme_detail, action.arguments, null, extras)
-                    }
-                }
-                onLikeClick = { viewModel.updateLike(it) }
-                onShareClick = { meme -> activity?.shareMeme(meme) }
-            }
+            memesAdapter = AdapterFactory.getMemesAdapter(activity, view, viewModel.getUserInfo())
             recyclerView.apply {
                 layoutManager = gridLayoutManager
                 adapter = memesAdapter

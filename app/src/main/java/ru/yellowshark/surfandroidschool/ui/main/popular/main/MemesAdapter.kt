@@ -28,19 +28,14 @@ class MemesAdapter : RecyclerView.Adapter<MemesAdapter.MemeViewHolder>() {
         holder.bind(item)
         with(holder.itemView) {
             setOnClickListener {
-                onItemClick?.let { function ->
-                    function(
-                        item,
-                        holder.itemView
-                    )
-                }
+                onItemClick?.let { click -> click(item, holder.itemView) }
             }
             like_iv.setOnClickListener {
                 item.isFavorite = !item.isFavorite
                 holder.updateLike(isLiked = item.isFavorite)
-                onLikeClick?.let { function -> function(item) }
+                onLikeClick?.let { click -> click(item) }
             }
-            share_iv.setOnClickListener { onShareClick?.let { function -> function(item) } }
+            share_iv.setOnClickListener { onShareClick?.let { click -> click(item) } }
         }
     }
 
