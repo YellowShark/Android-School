@@ -4,7 +4,7 @@
     <string name="password">Пароль</string>
     <string name="sign_in">Войти</string>
     <string name="helper_text">Пароль должен содержать 6 символов</string>
-    <string name="msg_nothing_found">На этом пока всё :/</string>
+    <string name="error_nothing_found">На этом пока всё :/</string>
     <string name="error_empty_text">Поле не может быть пустым</string>
     <string name="error_text_is_not_phone_number">Введёный текст не является номером телефона</string>
     <string name="error_wrong_data_msg">Вы ввели неверные данные.\nПопробуйте ещё раз</string>
@@ -24,7 +24,7 @@
     <string name="profile">Профиль</string>
     <string name="really_want_to_quit">Действительно хотите выйти?</string>
     <string name="cancel">Отмена</string>
-    <string name="send_to">Отправить мем...</string>
+    <string name="send_to">Отправить мем…</string>
     <string name="search">Поиск</string>
     <string name="storage_perm_rationale">Без этого разрешения приложение Вы не сможете загружать изображения из галереи.</string>
     <string name="you_can_change_it_in_options">Вы всегда можете изменить параметры доступа в настройках приложения.</string>

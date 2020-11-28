@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ru.yellowshark.surfandroidschool.data.network.NoConnectivityException
-import ru.yellowshark.surfandroidschool.domain.Errors
 import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.domain.meme.usecase.CacheMemesUseCase
@@ -24,7 +22,6 @@ class PopularMemesViewModel(
 
     private val _memesListViewState = MutableLiveData<ViewState>()
     val memesListViewState: LiveData<ViewState> get() = _memesListViewState
-
     val memesLiveData = MutableLiveData<List<Meme>>()
 
     init {
@@ -41,16 +38,9 @@ class PopularMemesViewModel(
                 .delay(500, TimeUnit.MILLISECONDS)
                 .subscribe(
                     { memes -> postSuccess(memes) },
-                    { t -> _memesListViewState.postValue(ViewState.Error(handleError(t))) }
+                    { t -> _memesListViewState.postValue(errorState(t)) }
                 )
         )
-    }
-
-    private fun handleError(t: Throwable): Errors {
-        return when (t) {
-            is NoConnectivityException -> Errors.NO_INTERNET
-            else -> Errors.SERVER_ERROR
-        }
     }
 
     private fun postSuccess(memes: List<Meme>) {

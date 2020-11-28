@@ -15,13 +15,9 @@ import ru.yellowshark.surfandroidschool.data.network.ConnectivityInterceptor
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
 import ru.yellowshark.surfandroidschool.data.repository.RepositoryImpl
-import ru.yellowshark.surfandroidschool.domain.meme.usecase.CacheMemesUseCase
-import ru.yellowshark.surfandroidschool.domain.meme.usecase.CacheMemesUseCaseImpl
-import ru.yellowshark.surfandroidschool.domain.meme.usecase.GetPopularMemesUseCase
-import ru.yellowshark.surfandroidschool.domain.meme.usecase.GetPopularMemesUseCaseImpl
+import ru.yellowshark.surfandroidschool.domain.meme.usecase.*
 import ru.yellowshark.surfandroidschool.domain.repository.Repository
-import ru.yellowshark.surfandroidschool.domain.user.usecase.GetUserInfoUseCase
-import ru.yellowshark.surfandroidschool.domain.user.usecase.GetUserInfoUseCaseImpl
+import ru.yellowshark.surfandroidschool.domain.user.usecase.*
 import ru.yellowshark.surfandroidschool.ui.auth.AuthViewModel
 import ru.yellowshark.surfandroidschool.ui.main.create.CreateMemeViewModel
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesViewModel
@@ -30,11 +26,11 @@ import ru.yellowshark.surfandroidschool.ui.main.profile.ProfileViewModel
 import ru.yellowshark.surfandroidschool.utils.BASE_URL
 
 val viewModelsModule = module {
-    viewModel { AuthViewModel(get()) }
+    viewModel { AuthViewModel(get(), get()) }
     viewModel { PopularMemesViewModel(get(), get(), get()) }
-    viewModel { MemeSearchFilterViewModel(get()) }
+    viewModel { MemeSearchFilterViewModel(get(), get()) }
     viewModel { CreateMemeViewModel(get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get(), get(), get()) }
 }
 
 val repositoryModule = module {
@@ -43,8 +39,17 @@ val repositoryModule = module {
 
 val useCasesModule = module {
     factory<GetPopularMemesUseCase> { GetPopularMemesUseCaseImpl(get()) }
+    factory<SearchMemesByTitleUseCase> { SearchMemesByTitleUseCaseImpl(get()) }
     factory<CacheMemesUseCase> { CacheMemesUseCaseImpl(get()) }
+
+    factory<GetLocalMemesUseCase> { GetLocalMemesUseCaseImpl(get()) }
+    factory<SaveLocalMemeUseCase> { SaveLocalMemeUseCaseImpl(get()) }
+    factory<UpdateLocalMemeUseCase> { UpdateLocalMemeUseCaseImpl(get()) }
+
     factory<GetUserInfoUseCase> { GetUserInfoUseCaseImpl(get()) }
+    factory<GetSessionToken> { GetSessionTokenImpl(get()) }
+    factory<LoginUserUseCase> { LoginUserUseCaseImpl(get()) }
+    factory<LogoutUserUseCase> { LogoutUserUseCaseImpl(get()) }
 }
 
 val sessionModule = module {

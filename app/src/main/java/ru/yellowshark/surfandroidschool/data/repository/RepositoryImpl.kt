@@ -2,7 +2,6 @@ package ru.yellowshark.surfandroidschool.data.repository
 
 import io.reactivex.Single
 import ru.yellowshark.surfandroidschool.data.db.MemesDao
-import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 import ru.yellowshark.surfandroidschool.data.network.AuthApi
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
@@ -10,7 +9,6 @@ import ru.yellowshark.surfandroidschool.data.network.auth.request.AuthRequest
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.domain.repository.Repository
 import ru.yellowshark.surfandroidschool.domain.user.model.User
-import ru.yellowshark.surfandroidschool.utils.EMPTY
 
 class RepositoryImpl(
     private val memesApi: MemesApi,
@@ -30,7 +28,7 @@ class RepositoryImpl(
 
     override fun getLastSessionUserInfo(): User = sessionManager.fetchUserInfo() ?: User.EMPTY
 
-    override fun getLastSessionToken(): String = sessionManager.fetchAuthToken() ?: String.EMPTY()
+    override fun getLastSessionToken(): String? = sessionManager.fetchAuthToken()
 
     override fun forgetUser() = sessionManager.forgetUser()
 
@@ -38,7 +36,7 @@ class RepositoryImpl(
         return memesApi.getPopularMemes().map { it.fromResponseMemeListToDomainMemeList() }
     }
 
-    override fun saveMeme(entityMeme: EntityLocalMeme) = memesDao.addCreatedMeme(entityMeme)
+    override fun saveMeme(meme: Meme): Single<Unit> = memesDao.addCreatedMeme(meme.toDbLocalMeme())
 
     override fun getLocalMemes(): Single<List<Meme>?> = memesDao.getLocalMemes()
 
@@ -46,7 +44,7 @@ class RepositoryImpl(
         memesDao.updateMemeByDate(meme.isFavorite, meme.createdDate)
 
     override fun cacheMemes(memes: List<Meme>): Single<Unit> {
-        return memesDao.cacheMemes(memes.map { it.toDbEntityCachedMeme() })
+        return memesDao.cacheMemes(memes.map { it.toDbCachedMeme() })
     }
 
     override fun getCachedMemesByTitle(query: String) =

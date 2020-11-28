@@ -21,7 +21,7 @@
         android:id="@+id/placeholder_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/msg_nothing_found"
+        android:text="@string/error_nothing_found"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="24sp"

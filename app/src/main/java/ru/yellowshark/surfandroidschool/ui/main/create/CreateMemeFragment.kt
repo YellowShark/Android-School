@@ -15,8 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
-import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 import ru.yellowshark.surfandroidschool.databinding.FragmentCreateMemeBinding
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.utils.getPhotoPath
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 import ru.yellowshark.surfandroidschool.utils.viewBinding
@@ -48,7 +48,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
             itemCreate.setOnMenuItemClickListener {
                 if (isAllFilled(memeHeaderEt.text.toString())) {
                     viewModel.addMeme(
-                        EntityLocalMeme(
+                        Meme(
                             createdDate = System.currentTimeMillis().toInt(),
                             description = memeTextEt.text.toString(),
                             isFavorite = false,

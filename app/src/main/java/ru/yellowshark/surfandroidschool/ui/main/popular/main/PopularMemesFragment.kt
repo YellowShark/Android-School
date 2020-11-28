@@ -5,8 +5,6 @@ import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -16,13 +14,13 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
-import ru.yellowshark.surfandroidschool.domain.Errors
-import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.domain.Error
+import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
 class PopularMemesFragment :
-    Fragment(R.layout.fragment_popular_memes),
+    BaseFragment(R.layout.fragment_popular_memes),
     SwipeRefreshLayout.OnRefreshListener,
     MenuItem.OnMenuItemClickListener {
 
@@ -30,23 +28,8 @@ class PopularMemesFragment :
     private val binding: FragmentPopularMemesBinding by viewBinding(FragmentPopularMemesBinding::bind)
     private val gson: Gson by inject()
     private val memesAdapter = MemesAdapter()
-    private val viewStateObserver = Observer<ViewState> { state ->
-        when (state) {
-            is ViewState.Loading -> showLoading()
-            is ViewState.Success -> showContent()
-            is ViewState.Error -> showError(state.error)
-        }
-        hideRefresher()
-    }
 
-    private fun hideRefresher() {
-        with(binding.refresherSrl) {
-            if (isRefreshing)
-                isRefreshing = false
-        }
-    }
-
-    private fun showContent() {
+    override fun showContent() {
         with(binding) {
             progressBar.root.visibility = View.GONE
             memeListRv.visibility = View.VISIBLE
@@ -54,7 +37,7 @@ class PopularMemesFragment :
         }
     }
 
-    private fun showError(error: Errors) {
+    override fun showError(error: Error) {
         with(binding) {
             progressBar.root.visibility = View.GONE
             memeListRv.visibility = View.GONE
@@ -63,16 +46,22 @@ class PopularMemesFragment :
         }
     }
 
-    private fun getErrorMessageText(error: Errors) = when(error) {
-        Errors.SERVER_ERROR -> getString(R.string.error_fail_load_msg)
-        Errors.NO_INTERNET -> getString(R.string.error_no_internet)
-    }
-
-    private fun showLoading() {
+    override fun showLoading() {
         with(binding) {
             progressBar.root.visibility = View.VISIBLE
             memeListRv.visibility = View.GONE
             errorTextTv.visibility = View.GONE
+        }
+    }
+
+    override fun doFinallyAfterEvent() {
+        hideRefresher()
+    }
+
+    private fun hideRefresher() {
+        with(binding.refresherSrl) {
+            if (isRefreshing)
+                isRefreshing = false
         }
     }
 

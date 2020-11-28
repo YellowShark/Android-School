@@ -1,6 +1,7 @@
 package ru.yellowshark.surfandroidschool.domain
 
-enum class Errors {
+enum class Error {
+    NO_RESULTS,
     NO_INTERNET,
     SERVER_ERROR;
 }

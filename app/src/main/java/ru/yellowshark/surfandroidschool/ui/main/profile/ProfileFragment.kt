@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -14,50 +12,43 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentProfileBinding
-import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.domain.Error
 import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
+import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
 class ProfileFragment :
-    Fragment(R.layout.fragment_profile),
+    BaseFragment(R.layout.fragment_profile),
     MenuItem.OnMenuItemClickListener {
 
     private val binding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
     private val gson: Gson by inject()
     private val memesAdapter = MemesAdapter()
     private val viewModel: ProfileViewModel by viewModel()
-    private val viewStateObserver = Observer<ViewState> { state ->
-        when (state) {
-            is ViewState.Loading -> showLoading()
-            is ViewState.Success -> showContent()
-            is ViewState.Error -> showError()
-            is ViewState.Destroy -> openLoginView()
-        }
-    }
 
-    private fun showError() {
+    override fun showError(error: Error) {
         with(binding) {
             context?.applicationContext?.showErrorSnackbar(root, getString(R.string.error_msg))
         }
     }
 
-    private fun openLoginView() {
+    override fun destroyView() {
         val intent = Intent(context?.applicationContext, AuthActivity::class.java)
         startActivity(intent)
         activity?.finish()
     }
 
-    private fun showContent() {
+    override fun showContent() {
         with(binding) {
             recyclerView.visibility = View.VISIBLE
             progressBar.root.visibility = View.GONE
         }
     }
 
-    private fun showLoading() {
+    override fun showLoading() {
         with(binding) {
             recyclerView.visibility = View.GONE
             progressBar.root.visibility = View.VISIBLE
@@ -101,7 +92,7 @@ class ProfileFragment :
     }
 
     private fun bindData() {
-        binding.user = viewModel.userInfo
+        binding.user = viewModel.getUserInfo()
     }
 
     private fun initRecyclerView() {
@@ -111,7 +102,7 @@ class ProfileFragment :
             memesAdapter.apply {
                 onItemClick = { meme, itemView ->
                     val extras = FragmentNavigatorExtras(itemView to meme.photoUrl)
-                    val user = viewModel.userInfo
+                    val user = viewModel.getUserInfo()
                     val action =
                         ProfileFragmentDirections.actionOpenDetails(
                             gson.toJson(meme),

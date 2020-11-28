@@ -1,7 +1,6 @@
 package ru.yellowshark.surfandroidschool.domain.repository
 
 import io.reactivex.Single
-import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.domain.user.model.User
 
@@ -12,13 +11,13 @@ interface Repository {
 
     fun getLastSessionUserInfo(): User
 
-    fun getLastSessionToken(): String
+    fun getLastSessionToken(): String?
 
     fun forgetUser()
 
     fun getPopularMemes(): Single<List<Meme>>
 
-    fun saveMeme(entityMeme: EntityLocalMeme): Single<Unit>
+    fun saveMeme(meme: Meme): Single<Unit>
 
     fun getLocalMemes(): Single<List<Meme>?>
 

@@ -5,8 +5,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -16,38 +14,36 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentSearchFilterBinding
-import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.domain.Error
+import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesFragmentDirections
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
-class MemesSearchFilterFragment : Fragment(R.layout.fragment_search_filter) {
+class MemesSearchFilterFragment : BaseFragment(R.layout.fragment_search_filter) {
     private val viewModel: MemeSearchFilterViewModel by viewModel()
     private val binding: FragmentSearchFilterBinding by viewBinding(FragmentSearchFilterBinding::bind)
     private lateinit var searchView: SearchView
     private lateinit var searchItem: MenuItem
     private val memesAdapter = MemesAdapter()
     private val gson: Gson by inject()
-    private val viewStateObserver = Observer<ViewState> { state ->
-        when (state) {
-            is ViewState.Success -> showResults()
-            is ViewState.Error -> showError()
-        }
-    }
 
-    private fun showError() {
+    override fun showError(error: Error) {
         with(binding) {
             recyclerView.visibility = View.GONE
             placeholderTv.visibility = View.VISIBLE
         }
     }
 
-    private fun showResults() {
+    override fun showContent() {
         with(binding) {
             recyclerView.visibility = View.VISIBLE
             placeholderTv.visibility = View.GONE
         }
+    }
+
+    override fun showLoading() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

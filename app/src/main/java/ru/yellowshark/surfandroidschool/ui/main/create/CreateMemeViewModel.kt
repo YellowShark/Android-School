@@ -1,14 +1,14 @@
 package ru.yellowshark.surfandroidschool.ui.main.create
 
-import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
-import ru.yellowshark.surfandroidschool.domain.repository.Repository
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
+import ru.yellowshark.surfandroidschool.domain.meme.usecase.SaveLocalMemeUseCase
 import ru.yellowshark.surfandroidschool.ui.base.BaseViewModel
 import ru.yellowshark.surfandroidschool.utils.runInBackground
 
 class CreateMemeViewModel(
-    private val repository: Repository
+    private val saveLocalMemeUseCase: SaveLocalMemeUseCase
 ) : BaseViewModel() {
-    fun addMeme(entityMeme: EntityLocalMeme) {
-        disposables.add(repository.saveMeme(entityMeme).runInBackground().subscribe())
+    fun addMeme(meme: Meme) {
+        disposables.add(saveLocalMemeUseCase(meme).runInBackground().subscribe())
     }
 }
