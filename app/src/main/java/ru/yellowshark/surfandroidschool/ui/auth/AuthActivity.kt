@@ -105,8 +105,8 @@ class AuthActivity: AppCompatActivity() {
     }
 
     private fun getErrorMessageText(error: Error) = when(error) {
-        Error.SERVER_ERROR -> getString(R.string.error_fail_load_msg)
         Error.NO_INTERNET -> getString(R.string.error_no_internet)
+        else -> getString(R.string.error_fail_load_msg)
     }
 
     private fun showProgressButton() {
