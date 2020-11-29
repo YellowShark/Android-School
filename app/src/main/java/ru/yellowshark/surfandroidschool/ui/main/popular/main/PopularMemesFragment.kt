@@ -10,8 +10,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
-import ru.yellowshark.surfandroidschool.domain.Error
+import ru.yellowshark.surfandroidschool.domain.ResponseError
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
+import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
 class PopularMemesFragment :
@@ -23,15 +25,16 @@ class PopularMemesFragment :
     private val binding: FragmentPopularMemesBinding by viewBinding(FragmentPopularMemesBinding::bind)
     private lateinit var memesAdapter: MemesAdapter
 
-    override fun showContent() {
+    override fun showContent(data: List<Meme>?) {
         with(binding) {
+            data?.let { memesAdapter.data = it }
             progressBar.root.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
             errorTextTv.visibility = View.GONE
         }
     }
 
-    override fun showError(error: Error) {
+    override fun showError(error: ResponseError) {
         with(binding) {
             progressBar.root.visibility = View.GONE
             recyclerView.visibility = View.GONE
@@ -68,9 +71,6 @@ class PopularMemesFragment :
     private fun observeViewModel() {
         with(viewModel) {
             memesListViewState.observe(viewLifecycleOwner, viewStateObserver)
-            memesLiveData.observe(viewLifecycleOwner, {
-                memesAdapter.data = it
-            })
         }
     }
 
@@ -86,7 +86,10 @@ class PopularMemesFragment :
 
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        memesAdapter = AdapterFactory.getMemesAdapter(view, activity)
+        memesAdapter = AdapterFactory.getMemesAdapter(
+            callingView = view,
+            onShare = { meme -> activity?.shareMeme(meme) }
+        )
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = memesAdapter

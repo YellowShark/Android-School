@@ -2,13 +2,13 @@ package ru.yellowshark.surfandroidschool.ui.main.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.domain.meme.usecase.GetLocalMemesUseCase
 import ru.yellowshark.surfandroidschool.domain.meme.usecase.UpdateLocalMemeUseCase
 import ru.yellowshark.surfandroidschool.domain.user.usecase.GetUserInfoUseCase
 import ru.yellowshark.surfandroidschool.domain.user.usecase.LogoutUserUseCase
 import ru.yellowshark.surfandroidschool.ui.base.BaseViewModel
+import ru.yellowshark.surfandroidschool.ui.base.ViewState
 import ru.yellowshark.surfandroidschool.utils.runInBackground
 
 class ProfileViewModel(
@@ -18,9 +18,8 @@ class ProfileViewModel(
     private val updateLocalMemeUseCase: UpdateLocalMemeUseCase
 ) : BaseViewModel() {
 
-    val viewState: LiveData<ViewState> get() = _viewState
-    private val _viewState = MutableLiveData<ViewState>()
-    val memesLiveData = MutableLiveData<List<Meme>>()
+    val viewState: LiveData<ViewState<List<Meme>>> get() = _viewState
+    private val _viewState = MutableLiveData<ViewState<List<Meme>>>()
 
     init {
         loadLocalMemes()
@@ -32,10 +31,9 @@ class ProfileViewModel(
         disposables.add(
             getLocalMemesUseCase()
                 .runInBackground()
-                .doOnSubscribe { _viewState.postValue(ViewState.Loading) }
+                .doOnSubscribe { _viewState.postValue(ViewState.Loading()) }
                 .subscribe { memes ->
-                    memesLiveData.postValue(memes)
-                    _viewState.postValue(ViewState.Success)
+                    _viewState.postValue(ViewState.Success(memes))
                 }
         )
     }
@@ -51,8 +49,8 @@ class ProfileViewModel(
             logoutUserUseCase()
                 .runInBackground()
                 .subscribe(
-                    { _viewState.postValue(ViewState.Destroy) },
-                    { t -> _viewState.postValue(errorState(t)) }
+                    { _viewState.postValue(ViewState.Destroy()) },
+                    { t -> _viewState.postValue(ViewState.Error(handleError(t))) }
                 )
         )
     }

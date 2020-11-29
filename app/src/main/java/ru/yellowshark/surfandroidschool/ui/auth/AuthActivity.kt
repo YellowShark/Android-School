@@ -14,8 +14,8 @@ import ru.tinkoff.decoro.watchers.FormatWatcher
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.ActivityAuthBinding
-import ru.yellowshark.surfandroidschool.domain.Error
-import ru.yellowshark.surfandroidschool.domain.ViewState
+import ru.yellowshark.surfandroidschool.domain.ResponseError
+import ru.yellowshark.surfandroidschool.ui.base.ViewState
 import ru.yellowshark.surfandroidschool.ui.main.MemesActivity
 import ru.yellowshark.surfandroidschool.utils.FORMATTED_PHONE_NUMBER_LENGTH
 import ru.yellowshark.surfandroidschool.utils.MIN_PASSWORD_LENGTH
@@ -25,7 +25,7 @@ import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 class AuthActivity: AppCompatActivity() {
     private lateinit var binding: ActivityAuthBinding
     private val viewModel: AuthViewModel by viewModel()
-    private val stateObserver = Observer<ViewState> { state ->
+    private val stateObserver = Observer<ViewState<Unit>> { state ->
         when(state) {
             is ViewState.Loading -> showProgressButton()
             is ViewState.Success -> {
@@ -97,15 +97,15 @@ class AuthActivity: AppCompatActivity() {
         }
     }
 
-    private fun showError(error: Error) {
+    private fun showError(error: ResponseError) {
         with(binding) {
             hideProgressButton()
             applicationContext.showErrorSnackbar(root, getErrorMessageText(error))
         }
     }
 
-    private fun getErrorMessageText(error: Error) = when(error) {
-        Error.NO_INTERNET -> getString(R.string.error_no_internet)
+    private fun getErrorMessageText(error: ResponseError) = when(error) {
+        ResponseError.NO_INTERNET -> getString(R.string.error_no_internet)
         else -> getString(R.string.error_fail_load_msg)
     }
 

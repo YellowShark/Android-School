@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentSearchFilterBinding
-import ru.yellowshark.surfandroidschool.domain.Error
+import ru.yellowshark.surfandroidschool.domain.ResponseError
+import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.AdapterFactory
 import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
+import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
 class MemesSearchFilterFragment : BaseFragment(R.layout.fragment_search_filter) {
@@ -21,15 +23,16 @@ class MemesSearchFilterFragment : BaseFragment(R.layout.fragment_search_filter) 
     private lateinit var searchItem: MenuItem
     private lateinit var memesAdapter: MemesAdapter
 
-    override fun showError(error: Error) {
+    override fun showError(error: ResponseError) {
         with(binding) {
             recyclerView.visibility = View.GONE
             placeholderTv.visibility = View.VISIBLE
         }
     }
 
-    override fun showContent() {
+    override fun showContent(data: List<Meme>?) {
         with(binding) {
+            data?.let { memesAdapter.data = it }
             recyclerView.visibility = View.VISIBLE
             placeholderTv.visibility = View.GONE
         }
@@ -47,9 +50,6 @@ class MemesSearchFilterFragment : BaseFragment(R.layout.fragment_search_filter) 
     private fun observeViewModel() {
         with(viewModel) {
             filterViewState.observe(viewLifecycleOwner, viewStateObserver)
-            filteredMemesLiveData.observe(viewLifecycleOwner) {
-                memesAdapter.data = it
-            }
         }
     }
 
@@ -65,7 +65,10 @@ class MemesSearchFilterFragment : BaseFragment(R.layout.fragment_search_filter) 
 
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        memesAdapter = AdapterFactory.getMemesAdapter(view, activity)
+        memesAdapter = AdapterFactory.getMemesAdapter(
+            callingView = view,
+            onShare = { meme -> activity?.shareMeme(meme) }
+        )
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = memesAdapter
