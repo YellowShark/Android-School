@@ -22,5 +22,5 @@ data class ResponseMeme (
     @SerializedName("title")
     val title: String
 ) {
-    fun fromResponseMemeToDomainMeme() = Meme(title, description, photoUrl, createdDate, isFavorite)
+    fun toDomainMeme() = Meme(title, description, photoUrl, createdDate, isFavorite)
 }

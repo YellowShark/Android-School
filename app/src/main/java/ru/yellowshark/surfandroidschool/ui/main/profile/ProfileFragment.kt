@@ -94,7 +94,7 @@ class ProfileFragment :
         with(binding) {
             val gridLayoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            memesAdapter = AdapterFactory.getMemesAdapter(activity, view, viewModel.getUserInfo())
+            memesAdapter = AdapterFactory.getMemesAdapter(view, activity)
             recyclerView.apply {
                 layoutManager = gridLayoutManager
                 adapter = memesAdapter

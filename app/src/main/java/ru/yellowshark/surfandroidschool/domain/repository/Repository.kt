@@ -1,17 +1,20 @@
 package ru.yellowshark.surfandroidschool.domain.repository
 
 import io.reactivex.Single
+import ru.yellowshark.surfandroidschool.data.network.auth.response.AuthResponse
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.domain.user.model.User
 
 interface Repository {
-    fun login(login: String, password: String): Single<Unit>
+    fun login(login: String, password: String): Single<AuthResponse>
 
     fun logout(): Single<Unit>
 
     fun getLastSessionUserInfo(): User
 
     fun getLastSessionToken(): String?
+
+    fun saveUser(token: String, user: User)
 
     fun forgetUser()
 

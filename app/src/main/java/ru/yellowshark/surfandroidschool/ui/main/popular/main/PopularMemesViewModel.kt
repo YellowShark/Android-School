@@ -8,15 +8,12 @@ import ru.yellowshark.surfandroidschool.domain.ViewState
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
 import ru.yellowshark.surfandroidschool.domain.meme.usecase.CacheMemesUseCase
 import ru.yellowshark.surfandroidschool.domain.meme.usecase.GetPopularMemesUseCase
-import ru.yellowshark.surfandroidschool.domain.user.model.User
-import ru.yellowshark.surfandroidschool.domain.user.usecase.GetUserInfoUseCase
 import ru.yellowshark.surfandroidschool.ui.base.BaseViewModel
 import ru.yellowshark.surfandroidschool.utils.runInBackground
 import java.util.concurrent.TimeUnit
 
 class PopularMemesViewModel(
     private val getPopularMemesUseCase: GetPopularMemesUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val cacheMemesUseCase: CacheMemesUseCase,
 ) : BaseViewModel() {
 
@@ -27,8 +24,6 @@ class PopularMemesViewModel(
     init {
         requestPopularMemes()
     }
-
-    fun getUserInfo(): User = getUserInfoUseCase()
 
     fun requestPopularMemes() {
         disposables.add(

@@ -65,7 +65,7 @@ class MemesSearchFilterFragment : BaseFragment(R.layout.fragment_search_filter) 
 
     private fun initRecyclerView() {
         val gridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        memesAdapter = AdapterFactory.getMemesAdapter(activity, view, viewModel.getUserInfo())
+        memesAdapter = AdapterFactory.getMemesAdapter(view, activity)
         binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = memesAdapter

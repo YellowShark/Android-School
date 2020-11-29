@@ -45,9 +45,6 @@
         <argument
             android:name="jsonMeme"
             app:argType="string" />
-        <argument
-            android:name="jsonUser"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/destination_search_filter"
