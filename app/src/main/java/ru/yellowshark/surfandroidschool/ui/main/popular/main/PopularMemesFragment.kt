@@ -12,6 +12,8 @@ import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentPopularMemesBinding
 import ru.yellowshark.surfandroidschool.domain.ResponseError
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
+import ru.yellowshark.surfandroidschool.ui.adapter.AdapterFactory
+import ru.yellowshark.surfandroidschool.ui.adapter.MemesAdapter
 import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding

@@ -10,9 +10,10 @@ import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentSearchFilterBinding
 import ru.yellowshark.surfandroidschool.domain.ResponseError
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
+import ru.yellowshark.surfandroidschool.ui.adapter.AdapterFactory
+import ru.yellowshark.surfandroidschool.ui.adapter.MemesAdapter
 import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
-import ru.yellowshark.surfandroidschool.ui.main.popular.main.AdapterFactory
-import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
+import ru.yellowshark.surfandroidschool.utils.MIN_QUERY_LENGTH
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.viewBinding
 
@@ -95,7 +96,7 @@ class MemesSearchFilterFragment : BaseFragment(R.layout.fragment_search_filter) 
             with(searchView) {
                 clearFocus()
                 searchItem.collapseActionView()
-                if (query != null && query.length > 2) {
+                if (query != null && query.length > MIN_QUERY_LENGTH) {
                     viewModel.searchMemes(query)
                 }
                 setQuery("", false)

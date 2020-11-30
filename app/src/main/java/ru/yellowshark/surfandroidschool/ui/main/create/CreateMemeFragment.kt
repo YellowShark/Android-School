@@ -35,6 +35,29 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
         initListeners()
     }
 
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_GALLERY_PHOTO -> {
+                    Log.d("TAG", "onActivityResult: ${data?.data}")
+                    data?.data?.let { uri ->
+                        binding.imageSrc = uri.toString()
+                    }
+                }
+                CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                    binding.imageSrc = context?.applicationContext?.getPhotoPath()
+                }
+            }
+        } else {
+            Toast.makeText(activity, R.string.error_msg, Toast.LENGTH_SHORT).show()
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     private fun initView() {
         itemCreate = binding.toolbar.menu.findItem(R.id.action_create)
         binding.imageSrc = null
@@ -42,9 +65,7 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
 
     private fun initListeners() {
         with(binding) {
-            toolbar.setNavigationOnClickListener {
-                fragmentManager?.popBackStack()
-            }
+            toolbar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
             itemCreate.setOnMenuItemClickListener {
                 if (isAllFilled(memeHeaderEt.text.toString())) {
                     viewModel.addMeme(
@@ -56,14 +77,16 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
                             title = memeHeaderEt.text.toString()
                         )
                     )
-                    Toast.makeText(activity, "Ваш мем успешно создан!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        activity,
+                        getString(R.string.create_meme_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     this@CreateMemeFragment.fragmentManager?.popBackStack()
                 }
                 return@setOnMenuItemClickListener true
             }
-            fabAddImage.setOnClickListener {
-                showDialog()
-            }
+            fabAddImage.setOnClickListener { showDialog() }
         }
 
     }
@@ -111,29 +134,6 @@ class CreateMemeFragment : Fragment(R.layout.fragment_create_meme) {
                 it,
                 AddPictureDialogFragment::class.java.simpleName
             )
-        }
-    }
-
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                REQUEST_GALLERY_PHOTO -> {
-                    Log.d("TAG", "onActivityResult: ${data?.data}")
-                    data?.data?.let { uri ->
-                        binding.imageSrc = uri.toString()
-                    }
-                }
-                CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE -> {
-                    binding.imageSrc = context?.applicationContext?.getPhotoPath()
-                }
-            }
-        } else {
-            Toast.makeText(activity, R.string.error_msg, Toast.LENGTH_SHORT).show()
-            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 

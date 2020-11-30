@@ -1,10 +1,11 @@
-package ru.yellowshark.surfandroidschool.ui.main.popular.main
+package ru.yellowshark.surfandroidschool.ui.adapter
 
 import android.view.View
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
+import ru.yellowshark.surfandroidschool.ui.main.popular.main.PopularMemesFragmentDirections
 import ru.yellowshark.surfandroidschool.utils.JsonSerializer
 
 class AdapterFactory {

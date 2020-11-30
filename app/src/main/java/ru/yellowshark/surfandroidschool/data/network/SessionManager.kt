@@ -2,17 +2,14 @@ package ru.yellowshark.surfandroidschool.data.network
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.gson.Gson
 import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.domain.user.model.User
+import ru.yellowshark.surfandroidschool.utils.JsonSerializer
 
 private const val USER_TOKEN = "user_token"
 private const val USER_INFO = "user_info"
 
-class SessionManager(
-    val context: Context,
-    val gson: Gson
-) {
+class SessionManager(context: Context) {
     private val prefs: SharedPreferences =
         context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
@@ -33,7 +30,7 @@ class SessionManager(
 
     private fun saveUserInfo(user: User) {
         val editor = prefs.edit()
-        val json = gson.toJson(user)
+        val json = JsonSerializer.toJson(user)
         editor.putString(USER_INFO, json)
         editor.apply()
     }
@@ -41,7 +38,7 @@ class SessionManager(
     fun fetchUserInfo(): User? {
         val json = prefs.getString(USER_INFO, null)
         return if (json != null)
-            gson.fromJson(json, User::class.java)
+            JsonSerializer.fromJson<User>(json)
         else
             null
     }

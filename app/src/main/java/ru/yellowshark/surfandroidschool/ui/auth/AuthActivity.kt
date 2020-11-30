@@ -36,12 +36,6 @@ class AuthActivity: AppCompatActivity() {
         }
     }
 
-    private fun openMemesActivity() {
-        val intent = Intent(applicationContext, MemesActivity::class.java)
-        startActivity(intent)
-        this.finish()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val token = viewModel.getLastSessionToken()
@@ -50,6 +44,12 @@ class AuthActivity: AppCompatActivity() {
         }
         observeViewModel()
         initUi()
+    }
+
+    private fun openMemesActivity() {
+        val intent = Intent(applicationContext, MemesActivity::class.java)
+        startActivity(intent)
+        this.finish()
     }
 
     private fun observeViewModel() {

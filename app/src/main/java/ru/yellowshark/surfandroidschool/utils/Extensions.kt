@@ -21,8 +21,6 @@ import java.util.*
 fun <T> Single<T>.runInBackground() =
     this.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-fun String.Companion.EMPTY(): String = ""
-
 fun Activity.shareMeme(meme: Meme) {
     val shareIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
@@ -41,13 +39,13 @@ fun Activity.shareMeme(meme: Meme) {
 
 fun Context.showErrorSnackbar(root: View, text: String) {
     Snackbar.make(root, text, Snackbar.LENGTH_SHORT)
-        .setBackgroundTint(resources.getColor(R.color.red))
+        .setBackgroundTint(ContextCompat.getColor(this, R.color.red))
         .show()
 }
 
 @Throws(IOException::class)
 fun Context.createImageFile(): File {
-    val timestamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val timestamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     val storageDir: File = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
     return File.createTempFile(
         "JPEG_${timestamp}",

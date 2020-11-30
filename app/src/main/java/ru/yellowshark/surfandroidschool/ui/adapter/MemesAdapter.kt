@@ -1,4 +1,4 @@
-package ru.yellowshark.surfandroidschool.ui.main.popular.main
+package ru.yellowshark.surfandroidschool.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View

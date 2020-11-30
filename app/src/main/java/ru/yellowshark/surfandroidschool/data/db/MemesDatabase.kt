@@ -7,6 +7,8 @@ import androidx.room.RoomDatabase
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityCachedMeme
 import ru.yellowshark.surfandroidschool.data.db.entity.EntityLocalMeme
 
+private const val DB_NAME = "memes.db"
+
 @Database(entities = [EntityLocalMeme::class, EntityCachedMeme::class], version = 5)
 abstract class MemesDatabase : RoomDatabase() {
     abstract fun memesDao(): MemesDao
@@ -22,7 +24,7 @@ abstract class MemesDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
-                context.applicationContext, MemesDatabase::class.java, "memes.db"
+                context.applicationContext, MemesDatabase::class.java, DB_NAME
             )
                 .fallbackToDestructiveMigration()
                 .build()

@@ -1,6 +1,9 @@
 package ru.yellowshark.surfandroidschool.app.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.google.gson.Gson
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -9,13 +12,13 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.yellowshark.surfandroidschool.data.network.AuthApi
-import ru.yellowshark.surfandroidschool.data.network.ConnectivityInterceptor
 import ru.yellowshark.surfandroidschool.data.network.MemesApi
 import ru.yellowshark.surfandroidschool.data.network.SessionManager
+import ru.yellowshark.surfandroidschool.domain.NoConnectivityException
 import ru.yellowshark.surfandroidschool.utils.BASE_URL
 
 val networkModule = module {
-    factory { ConnectivityInterceptor(androidContext()) }
+    factory { provideInterceptor(androidContext()) }
     factory { provideOkHttpClient(get()) }
     single { Gson() }
     single { provideRetrofit(get(), get()) }
@@ -24,7 +27,27 @@ val networkModule = module {
 }
 
 val sessionModule = module {
-    single { SessionManager(androidApplication(), get()) }
+    single { SessionManager(androidApplication()) }
+}
+
+private fun provideInterceptor(appContext: Context): Interceptor {
+    fun isOnline(): Boolean {
+        val connectivityManager = appContext.getSystemService(Context.CONNECTIVITY_SERVICE)
+                as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+    return Interceptor { chain ->
+        if (!isOnline())
+            throw NoConnectivityException()
+        return@Interceptor chain.proceed(chain.request())
+    }
+}
+
+private fun provideOkHttpClient(connectivityInterceptor: Interceptor): OkHttpClient {
+    return OkHttpClient.Builder()
+        .addInterceptor(connectivityInterceptor)
+        .build()
 }
 
 private fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
@@ -33,12 +56,6 @@ private fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
-}
-
-private fun provideOkHttpClient(connectivityInterceptor: ConnectivityInterceptor): OkHttpClient {
-    return OkHttpClient.Builder()
-        .addInterceptor(connectivityInterceptor)
         .build()
 }
 

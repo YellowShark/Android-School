@@ -10,10 +10,10 @@ import ru.yellowshark.surfandroidschool.R
 import ru.yellowshark.surfandroidschool.databinding.FragmentProfileBinding
 import ru.yellowshark.surfandroidschool.domain.ResponseError
 import ru.yellowshark.surfandroidschool.domain.meme.model.Meme
+import ru.yellowshark.surfandroidschool.ui.adapter.AdapterFactory
+import ru.yellowshark.surfandroidschool.ui.adapter.MemesAdapter
 import ru.yellowshark.surfandroidschool.ui.auth.AuthActivity
 import ru.yellowshark.surfandroidschool.ui.base.BaseFragment
-import ru.yellowshark.surfandroidschool.ui.main.popular.main.AdapterFactory
-import ru.yellowshark.surfandroidschool.ui.main.popular.main.MemesAdapter
 import ru.yellowshark.surfandroidschool.utils.shareMeme
 import ru.yellowshark.surfandroidschool.utils.showErrorSnackbar
 import ru.yellowshark.surfandroidschool.utils.viewBinding

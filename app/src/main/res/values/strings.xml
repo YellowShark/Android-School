@@ -34,4 +34,5 @@
     <string name="select_photo">Выбрать фото</string>
     <string name="from_gallery">Из галереи</string>
     <string name="take_a_photo">Сделать фото</string>
+    <string name="create_meme_success">Ваш мем успешно создан!</string>
 </resources>
