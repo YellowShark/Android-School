@@ -16,6 +16,6 @@
   <li>room db</li>
   <li>Retrofit2 + Gson for network requests</li>
   <li>Glide for loading photos</li>
-  <li>RxJava for multithreding</li>
+  <li>RxJava for async operations</li>
   <li>LiveData</li>
 </ul>
