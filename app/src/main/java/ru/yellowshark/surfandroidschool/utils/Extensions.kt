@@ -7,6 +7,7 @@ import android.os.Environment
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -19,6 +20,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 fun <T> Single<T>.runInBackground() =
+    this.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+fun Completable.runInBackground() =
     this.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
 fun Activity.shareMeme(meme: Meme) {

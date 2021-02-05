@@ -1,7 +1,7 @@
 package ru.yellowshark.surfandroidschool.domain.user.usecase
 
-import io.reactivex.Single
+import io.reactivex.Completable
 
 interface LogoutUserUseCase {
-    operator fun invoke(): Single<Unit>
+    operator fun invoke(): Completable
 }

@@ -1,5 +1,6 @@
 package ru.yellowshark.surfandroidschool.data.repository
 
+import io.reactivex.Completable
 import io.reactivex.Single
 import ru.yellowshark.surfandroidschool.data.db.MemesDao
 import ru.yellowshark.surfandroidschool.data.network.AuthApi
@@ -21,7 +22,7 @@ class RepositoryImpl(
     override fun login(login: String, password: String): Single<AuthResponse> =
         authApi.userAuth(AuthRequest(login, password))
 
-    override fun logout(): Single<Unit> = authApi.userLogout()
+    override fun logout(): Completable = authApi.userLogout()
 
     override fun getLastSessionUserInfo(): User = sessionManager.fetchUserInfo() ?: User.EMPTY
 
@@ -34,14 +35,14 @@ class RepositoryImpl(
     override fun getPopularMemes(): Single<List<Meme>> =
         memesApi.getPopularMemes().map { it.toDomainMemeList() }
 
-    override fun saveMeme(meme: Meme): Single<Unit> = memesDao.addCreatedMeme(meme.toDbLocalMeme())
+    override fun saveMeme(meme: Meme): Completable = memesDao.addCreatedMeme(meme.toDbLocalMeme())
 
     override fun getLocalMemes(): Single<List<Meme>?> = memesDao.getLocalMemes()
 
     override fun updateLocalMeme(meme: Meme) =
         memesDao.updateMemeByDate(meme.isFavorite, meme.createdDate)
 
-    override fun cacheMemes(memes: List<Meme>): Single<Unit> =
+    override fun cacheMemes(memes: List<Meme>): Completable =
         memesDao.cacheMemes(memes.map { it.toDbCachedMeme() })
 
 
